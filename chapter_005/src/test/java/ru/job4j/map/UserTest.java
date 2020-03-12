@@ -12,7 +12,7 @@ public class UserTest {
     @Test
     public void whenCreateTwoUserAndShowMap() {
         User u1 = new User("Иван", 1, null);
-        User u2 = new User("Роман", 2, null);
+        User u2 = new User("Иван", 1, null);
         Map<User, Object> userMap = new HashMap<>();
         userMap.put(u1, 2);
         userMap.put(u2, 10);
