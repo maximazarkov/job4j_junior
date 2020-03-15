@@ -18,4 +18,13 @@ public class User {
     public int hashCode() {
         return Objects.hash(name, children, birthday);
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return children == user.children &&
+                name.equals(user.name) &&
+                Objects.equals(birthday, user.birthday);
+    }
 }
