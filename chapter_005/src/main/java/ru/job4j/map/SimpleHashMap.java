@@ -3,85 +3,64 @@ package ru.job4j.map;
 import java.util.Objects;
 
 public class  SimpleHashMap<K, V> {
-    private K key;
-    private V value;
+    private final static int DEFAULT_ARRAY_SIZE = 1 << 4; // aka 16
+    private final static float DEFAULT_LOAD_FACTOR = 0.75f;
+
+    private Node<K, V>[] sHashMapArray;
+    private int size;
+    private int count = 0;
+    private float loadFactor = 0;
 
     public SimpleHashMap() {
+         size = DEFAULT_ARRAY_SIZE;
+         sHashMapArray = new Node[size];
     }
 
     static class Node<K, V> {
-        int hash;
         K key;
         V value;
-        Node<K, V> next;
 
-        public Node(int hash, K key, V value, Node<K, V> next) {
-            this.hash = hash;
+        public Node(K key, V value) {
             this.key = key;
             this.value = value;
-            this.next = next;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return key + " = " + value;
-        }
-
-        public void setValue(V value) {
-            this.value = value;
-        }
-
-
-        /* пример equals() из HashMap.
-         public final boolean equals(Object o) {
-            if (o == this)
-                return true;
-            if (o instanceof Map.Entry) {
-                Map.Entry<?,?> e = (Map.Entry<?,?>)o;
-                if (Objects.equals(key, e.getKey()) &&
-                    Objects.equals(value, e.getValue()))
-                    return true;
-            }
-            return false;
-        }*/
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || o.getClass() != getClass()) {
-                return false;
-            }
-            SimpleHashMap<K, V> shm = (SimpleHashMap<K, V>) o;
-            /* >>>>>>>>>
-            прописать условие для сравнения объекта по equals() ключа и значения
-             <<<<<<<<<<<*/
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
         }
     }
 
     public boolean insert(K key, V value) {
-        return false;
+        boolean result = false;
+        if (loadFactor > DEFAULT_LOAD_FACTOR) {
+            Node[] tmp = sHashMapArray;
+            sHashMapArray = new Node[size << 1];
+            System.arraycopy(sHashMapArray, 0, tmp, 0, tmp.length);
+        }
+        int h = hash(key);
+        if (sHashMapArray[h] == null) {
+            sHashMapArray[h] = new Node<>(key, value);
+            loadFactor =(float) ++count / size;
+            result = true;
+        }
+        return result;
+
+    }
+
+    public int hash(K key) {
+        return key.hashCode() % size;
     }
 
     public V get(K key) {
-        return null;
+        int h = hash(key);
+        return (sHashMapArray[h] != null && key.equals(sHashMapArray[h].key)) ? sHashMapArray[h].value : null;
     }
 
     public boolean delete(K key) {
-        return false;
+        int h = hash(key);
+        boolean result = false;
+        if (sHashMapArray[h] != null && key.equals(sHashMapArray[h].key)) {
+            sHashMapArray[h] = null;
+            count--;
+            result = true;
+        }
+        return result;
     }
 }
 
