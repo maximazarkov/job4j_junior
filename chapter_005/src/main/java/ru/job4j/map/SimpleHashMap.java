@@ -29,14 +29,15 @@ public class  SimpleHashMap<K, V> {
     public boolean insert(K key, V value) {
         boolean result = false;
         if (loadFactor > DEFAULT_LOAD_FACTOR) {
-            Node[] tmp = sHashMapArray;
-            sHashMapArray = new Node[size << 1];
-            System.arraycopy(sHashMapArray, 0, tmp, 0, tmp.length);
+            Node<K, V>[] tmp = sHashMapArray;
+            size = size << 1;
+            sHashMapArray = new Node[size];
+            System.arraycopy(tmp, 0, sHashMapArray, 0, tmp.length);
         }
         int h = hash(key);
         if (sHashMapArray[h] == null) {
             sHashMapArray[h] = new Node<>(key, value);
-            loadFactor =(float) ++count / size;
+            loadFactor = (float) ++count / size;
             result = true;
         }
         return result;

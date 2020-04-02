@@ -13,6 +13,23 @@ public class SimpleHashMapTest {
     }
 
     @Test
+    public void when18InsertThenTrue() {
+        SimpleHashMap<Integer, String> shm = new SimpleHashMap<>();
+        int i = 0;
+        while (i < 18) {
+            boolean insertStatus = shm.insert((Integer) (++i), "Test" + i);
+            assertTrue(insertStatus);
+        }
+
+        i = 0;
+        while (i < 18) {
+            String expected = "Test" + ++i;
+            String result = shm.get(i);
+            assertThat(expected, is(result));
+        }
+    }
+
+    @Test
     public void whenTwoInsertThenFalse() {
         SimpleHashMap<Integer, String> shm = new SimpleHashMap<>();
         assertTrue(shm.insert(1234, "Test"));
