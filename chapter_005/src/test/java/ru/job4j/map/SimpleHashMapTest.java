@@ -19,13 +19,15 @@ public class SimpleHashMapTest {
         while (i < 18) {
             boolean insertStatus = shm.insert((Integer) (++i), "Test" + i);
             assertTrue(insertStatus);
+            System.out.print(shm.hash(i) + " | ");
         }
-
+        System.out.println();
         i = 0;
         while (i < 18) {
             String expected = "Test" + ++i;
             String result = shm.get(i);
             assertThat(expected, is(result));
+            System.out.print(shm.hash(i) + " | ");
         }
     }
 
