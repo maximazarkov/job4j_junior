@@ -23,8 +23,8 @@ public final class PhoneNumber {
         this.lineNumber = (short) lineNumber;
     }
 
-    private static void rangeCheck(int arg, int max, String name){
-        if (arg < 0 || arg > max){
+    private static void rangeCheck(int arg, int max, String name) {
+        if (arg < 0 || arg > max) {
             throw new IllegalArgumentException(name + ": " + arg);
         }
     }
