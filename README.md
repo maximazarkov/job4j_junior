@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/maximazarkov/job4j.svg?branch=master)](https://travis-ci.org/maximazarkov/job4j)
-[![codecov](https://codecov.io/gh/maximazarkov/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/maximazarkov/job4j)
+[![Build Status](https://travis-ci.org/maximazarkov/job4j_junior.svg?branch=master)](https://travis-ci.org/maximazarkov/job4j_junior)
+[![codecov](https://codecov.io/gh/maximazarkov/job4j_junior/branch/master/graph/badge.svg)](https://codecov.io/gh/maximazarkov/job4j_junior)
 
 # Репозиторий Максима Азаркова для обучения языку Java на [Job4j.ru](http://Job4j.ru)
 Здравствуйте, друзья. Меня зовут Азарков Максим. Представляю Вам результаты моего участия в проекте Job4j.ru.
