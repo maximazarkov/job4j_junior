@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
 
-public class Tree<E> implements SimpleTree<E> {
+public class Tree<E extends  Comparable<E>> implements SimpleTree<E> {
     private final Node<E> root;
 
     public Tree(final E root) {
