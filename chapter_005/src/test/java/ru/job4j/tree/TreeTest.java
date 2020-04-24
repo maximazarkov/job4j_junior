@@ -20,6 +20,20 @@ public class TreeTest {
     }
 
     @Test
+    public void whenErrorAddThenFalse() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(1, 4);
+        tree.add(4, 5);
+        tree.add(5, 6);
+        assertThat(tree.findBy(6).isPresent(), is(true));
+        assertFalse(tree.add(5, 6));
+        assertFalse(tree.add(55, 6));
+
+    }
+
+    @Test
     public void when1ElFindNotExitThenOptionEmpty() {
         Tree<Integer> tree = new Tree<>(1);
         tree.add(1, 2);
