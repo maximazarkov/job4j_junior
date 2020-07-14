@@ -1,6 +1,8 @@
 package ru.job4j.statanalize;
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Analize {
     /**
@@ -15,28 +17,48 @@ public class Analize {
      */
     public Info diff(List<User> previous, List<User> current) {
         Info info = new Info();
-        int pre = 0;
-        int cur = 0;
 
         if ((current.isEmpty()) && previous.isEmpty()) {
             return info;
         }
 
-        while ((pre < previous.size()) || (cur < current.size())) {
+        Map<Integer, String> prev =
+                previous.stream().collect(Collectors.toMap(User::getId,  User::getName));
+//        Set<Integer> preKeys = prev.keySet();
+        Iterator pre = prev.keySet().iterator();
 
-            if (pre == previous.size()) {
-                info.added += current.size() - cur;
+        Map<Integer, String> curr =
+                current.stream().collect(Collectors.toMap(User::getId,  User::getName));
+//        Set<Integer> curKeys = curr.keySet();
+        Iterator cur = curr.keySet().iterator();
+
+        int preKey = 0;
+        int curKey = 0;
+
+//        while ((preCount < prev.size()) || (curCount < curr.size())) {
+        while ((pre.hasNext()) || (cur.hasNext())) {
+
+            if (!pre.hasNext()) {
+                while (cur.hasNext()) {
+                    info.added++;
+                    cur.next();
+                }
                 break;
             }
 
-            if (cur == current.size()) {
-                info.deleted += previous.size() - pre;
+            if (!cur.hasNext()) {
+                while (pre.hasNext()) {
+                    info.deleted++;
+                    pre.next();
+                }
                 break;
             }
 
-            if ((previous.get(pre).id > current.get(cur).id)) {
+
+
+            if ((prev.get(pre.next())).compareTo(curr.get(cur.next())) > 0) {
                 info.added++;
-                cur++;
+                curCount++;
                 continue;
             }
 
@@ -59,6 +81,8 @@ public class Analize {
 
     }
 
+    Comparator<User> comp = (o1, o2) -> o1.id - o2.id;
+
     public static class User {
         int id;
         String name;
@@ -66,6 +90,28 @@ public class Analize {
         User(int id, String name) {
             this.id = id;
             this.name = name;
+        }
+
+        private int getId() {
+            return id;
+        }
+
+        private String getName() {
+            return name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            User user = (User) o;
+            return id == user.id &&
+                    Objects.equals(name, user.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
         }
     }
 
