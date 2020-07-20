@@ -1,5 +1,6 @@
 package ru.job4j.statanalize;
 
+import java.sql.PreparedStatement;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,33 +37,20 @@ public class Analize {
         do {
             System.out.println(info.added + " " + info.deleted + " " + info.changed);
 
-            if (preEntry == null) {
-                if (preIterator.hasNext()) {
-                    preEntry = preIterator.next();
-                }
-            }
-            if (curEntry == null) {
-                if (curIterator.hasNext()) {
-                    curEntry = curIterator.next();
-                }
-            }
+            preEntry = setEntry(preEntry, preIterator);
+            curEntry = setEntry(curEntry, curIterator);
 
-            if (preEntry == null) {
-                do {
-                    info.added++;
-                    curEntry = curIterator.hasNext() ? curIterator.next() : null;
-                } while (curEntry != null);
+            int tail = checkingTail(preEntry, curEntry, curIterator);
+            if (tail > 0) {
+                info.added += tail;
                 break;
             }
 
-            if (curEntry == null) {
-                do {
-                    info.deleted++;
-                    preEntry = preIterator.hasNext() ? preIterator.next() : null;
-                } while (preEntry != null);
+            tail = checkingTail(curEntry, preEntry, preIterator);
+            if (tail > 0) {
+                info.deleted += tail;
                 break;
             }
-
 
             if (preEntry.getKey() - curEntry.getKey() > 0) {
                 info.added++;
@@ -92,19 +80,30 @@ public class Analize {
         return info;
     }
 
-//    private HashMap.Entry<Integer, String> setPreEntry(HashMap it) {
-//        if (preEntry == null) {
-//            if (preIterator.hasNext()) {
-//                preEntry = preIterator.next();
-//            }
-//        }
-//        if (curEntry == null) {
-//            if (curIterator.hasNext()) {
-//                curEntry = curIterator.next();
-//            }
-//        }
-//
-//    }
+    private int checkingTail(HashMap.Entry<Integer, String> entryNull,
+                             HashMap.Entry<Integer, String> entryTail,
+                             Iterator<Map.Entry<Integer, String>> it) {
+        int count = 0;
+        HashMap.Entry<Integer, String> tail = entryTail;
+        if (entryNull == null) {
+            do {
+                count++;
+                tail = it.hasNext() ? it.next() : null;
+            } while (tail != null);
+        }
+        return count;
+    }
+
+    private HashMap.Entry<Integer, String> setEntry(HashMap.Entry<Integer, String> entry,
+                                                    Iterator<Map.Entry<Integer, String>> it) {
+        HashMap.Entry<Integer, String> result = entry;
+        if (entry == null) {
+            if (it.hasNext()) {
+                result = it.next();
+            }
+        }
+        return result;
+    }
 
     public static class User {
         int id;
