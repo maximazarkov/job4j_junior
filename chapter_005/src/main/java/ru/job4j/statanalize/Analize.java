@@ -3,6 +3,7 @@ package ru.job4j.statanalize;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Analize {
     /**
@@ -22,66 +23,88 @@ public class Analize {
             return info;
         }
 
-        Map<Integer, String> prev =
+        Map<Integer, String> previousMap =
                 previous.stream().collect(Collectors.toMap(User::getId,  User::getName));
-//        Set<Integer> preKeys = prev.keySet();
-        Iterator pre = prev.keySet().iterator();
+        Iterator<Map.Entry<Integer, String>> preIterator = previousMap.entrySet().iterator();
+        HashMap.Entry<Integer, String> preEntry = null;
 
-        Map<Integer, String> curr =
+        Map<Integer, String> currentMap =
                 current.stream().collect(Collectors.toMap(User::getId,  User::getName));
-//        Set<Integer> curKeys = curr.keySet();
-        Iterator cur = curr.keySet().iterator();
+        Iterator<Map.Entry<Integer, String>> curIterator = currentMap.entrySet().iterator();
+        HashMap.Entry<Integer, String> curEntry = null;
 
-        int preKey = 0;
-        int curKey = 0;
+        do {
+            System.out.println(info.added + " " + info.deleted + " " + info.changed);
 
-//        while ((preCount < prev.size()) || (curCount < curr.size())) {
-        while ((pre.hasNext()) || (cur.hasNext())) {
+            if (preEntry == null) {
+                if (preIterator.hasNext()) {
+                    preEntry = preIterator.next();
+                }
+            }
+            if (curEntry == null) {
+                if (curIterator.hasNext()) {
+                    curEntry = curIterator.next();
+                }
+            }
 
-            if (!pre.hasNext()) {
-                while (cur.hasNext()) {
+            if (preEntry == null) {
+                do {
                     info.added++;
-                    cur.next();
-                }
+                    curEntry = curIterator.hasNext() ? curIterator.next() : null;
+                } while (curEntry != null);
                 break;
             }
 
-            if (!cur.hasNext()) {
-                while (pre.hasNext()) {
+            if (curEntry == null) {
+                do {
                     info.deleted++;
-                    pre.next();
-                }
+                    preEntry = preIterator.hasNext() ? preIterator.next() : null;
+                } while (preEntry != null);
                 break;
             }
 
 
-
-            if ((prev.get(pre.next())).compareTo(curr.get(cur.next())) > 0) {
+            if (preEntry.getKey() - curEntry.getKey() > 0) {
                 info.added++;
-                curCount++;
+                curEntry = null;
                 continue;
             }
 
-            if (previous.get(pre).id < current.get(cur).id) {
+            if (preEntry.getKey() - curEntry.getKey() < 0) {
                 info.deleted++;
-                pre++;
+                preEntry = null;
                 continue;
             }
 
-            if (previous.get(pre).id == current.get(cur).id) {
-                if (!previous.get(pre).name.equals(current.get(cur).name)) {
+            if (preEntry.getKey() - (curEntry.getKey()) == 0) {
+                if (!preEntry.getValue().equals(curEntry.getValue())) {
                     info.changed++;
                 }
+                curEntry = null;
+                preEntry = null;
             }
-            pre++;
-            cur++;
-        }
+
+        } while ((preIterator.hasNext())
+                || (curIterator.hasNext())
+                || curEntry != null
+                || preEntry != null);
 
         return info;
-
     }
 
-    Comparator<User> comp = (o1, o2) -> o1.id - o2.id;
+//    private HashMap.Entry<Integer, String> setPreEntry(HashMap it) {
+//        if (preEntry == null) {
+//            if (preIterator.hasNext()) {
+//                preEntry = preIterator.next();
+//            }
+//        }
+//        if (curEntry == null) {
+//            if (curIterator.hasNext()) {
+//                curEntry = curIterator.next();
+//            }
+//        }
+//
+//    }
 
     public static class User {
         int id;
@@ -102,11 +125,14 @@ public class Analize {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             User user = (User) o;
-            return id == user.id &&
-                    Objects.equals(name, user.name);
+            return id == user.id && Objects.equals(name, user.name);
         }
 
         @Override
@@ -120,16 +146,5 @@ public class Analize {
         int changed;
         int deleted;
 
-        public int getAdded() {
-            return added;
-        }
-
-        public int getChanged() {
-            return changed;
-        }
-
-        public int getDeleted() {
-            return deleted;
-        }
     }
 }

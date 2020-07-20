@@ -100,15 +100,15 @@ public class AnalizeTest {
         listIn.add(new Analize.User(5, "F"));   //3
         listIn.add(new Analize.User(6, "G"));   //4
 //        listIn.add(new Analize.User(7, "H"));
-
-        listOut.add(new Analize.User(0, "A"));  //0 - added
-        listOut.add(new Analize.User(1, "B"));  //1 - changed
-//        listOut.add(new Analize.User(2, "C"));            //deleted
-        listOut.add(new Analize.User(3, "D"));  //2 - no action
-        listOut.add(new Analize.User(4, "E"));  //3 - added
-        listOut.add(new Analize.User(5, "F"));  //4 - no action
-//        listOut.add(new Analize.User(6, "G"));            //deleted
-        listOut.add(new Analize.User(7, "H"));  //5 - added
+                                                                        //(add del chng)
+        listOut.add(new Analize.User(0, "A"));  //0 - added     (1 0 0)
+        listOut.add(new Analize.User(1, "B"));  //1 - changed   (1 0 1)
+//        listOut.add(new Analize.User(2, "C"));            //deleted      (1 1 1)
+        listOut.add(new Analize.User(3, "D"));  //2 - no action (1 1 1)
+        listOut.add(new Analize.User(4, "E"));  //3 - added     (2 1 1)
+        listOut.add(new Analize.User(5, "F"));  //4 - no action (2 1 1)
+//        listOut.add(new Analize.User(6, "G"));            //deleted       (2 2 1)
+        listOut.add(new Analize.User(7, "H"));  //5 - added     (3 2 1)
 
         assertThat(new Analize()
                         .diff(listIn, listOut)
