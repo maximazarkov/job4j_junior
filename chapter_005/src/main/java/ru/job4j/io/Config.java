@@ -26,8 +26,11 @@ public class Config {
             String[] tokens;
             while ((lines = read.readLine()) != null) {
                 tokens = lines.split("\\=");
-                //проигнорим битые строки - комментарии, пустые строки и строки не содержащие знака "="
-                if (tokens.length < 2) {
+
+                //проигнорим битые строки:
+                if ((tokens[0].length() == 0)               // пустые строки
+                        || (tokens[0].charAt(0) == '#')     // комментарии
+                        || (tokens.length < 2)) {           // строки, не содержащие знака "="
                     continue;
                 }
                 values.put(tokens[0], tokens[1]);
