@@ -10,12 +10,9 @@ public class Analizy {
     }
 
     public void unavailable(String source, String target) {
-        String pathSource = Analizy.class.getResource("").getPath() + source;
-        String pathTarget = Analizy.class.getResource("").getPath()  + target;
-
         StringBuilder data = new StringBuilder();
 
-        try (BufferedReader in = new BufferedReader(new FileReader(pathSource))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
             String lines;
             String[] tokens;
             boolean onLine = false;
@@ -45,7 +42,7 @@ public class Analizy {
             e.printStackTrace();
         }
 
-        try (PrintWriter out = new PrintWriter(new FileOutputStream(pathTarget))) {
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(target))) {
             out.println(data);
         } catch (Exception e) {
             e.printStackTrace();

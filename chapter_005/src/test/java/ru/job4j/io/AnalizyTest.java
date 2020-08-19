@@ -1,6 +1,8 @@
 package ru.job4j.io;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
 
@@ -9,11 +11,14 @@ import static org.junit.Assert.*;
 
 public class AnalizyTest {
 
-    @Test
-    public void whenTwoDoneDiapsones() {
-        String path = (Analizy.class.getResource("").getPath());
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
-        try (PrintWriter out = new PrintWriter(new FileOutputStream(path + "server.log"))) {
+    @Test
+    public void whenTwoDoneDiapsones() throws IOException {
+        File server = folder.newFile("server.log");
+        File unavailable = folder.newFile("unavailable.csv");
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(server))) {
             out.println("200 10:56:01");
             out.println("500 10:57:01"); //onLine
             out.println("400 10:58:01");
@@ -25,12 +30,12 @@ public class AnalizyTest {
         }
 
         Analizy an = new Analizy();
-        an.unavailable("server.log", "unavailable.csv");
+        an.unavailable(server.toString(), unavailable.toString());
 
         try (
                 BufferedReader in =
                         new BufferedReader(
-                                new FileReader(path + "unavailable.csv"))) {
+                                new FileReader(unavailable))) {
             String line;
             String lastLine = null;
             while ((line = in.readLine()) != null) {
@@ -44,10 +49,12 @@ public class AnalizyTest {
     }
 
     @Test
-    public void whenSecondDiapsonesIsOnLine() {
-        String path = (Analizy.class.getResource("").getPath());
+    public void whenSecondDiapsonesIsOnLine() throws IOException {
+//        String path = (Analizy.class.getResource("").getPath());
 
-        try (PrintWriter out = new PrintWriter(new FileOutputStream(path + "server.log"))) {
+        File server = folder.newFile("server.log");
+        File unavailable = folder.newFile("unavailable.csv");
+        try (PrintWriter out = new PrintWriter(new FileOutputStream(server))) {
             out.println("200 10:56:01");
             out.println("500 10:57:01"); //onLine
             out.println("400 10:58:01");
@@ -58,12 +65,12 @@ public class AnalizyTest {
         }
 
         Analizy an = new Analizy();
-        an.unavailable("server.log", "unavailable.csv");
+        an.unavailable(server.toString(), unavailable.toString());
 
         try (
                 BufferedReader in =
                         new BufferedReader(
-                                new FileReader(path + "unavailable.csv"))) {
+                                new FileReader(unavailable))) {
             String line;
             String lastLine = null;
             while ((line = in.readLine()) != null) {
