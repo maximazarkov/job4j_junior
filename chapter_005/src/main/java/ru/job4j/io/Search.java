@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Search {
@@ -18,16 +19,26 @@ public class Search {
         // поиска файлов по расширению. например с помощью интерфейса FilenameFilter
         // первый костыльный вариант, который имеет сигнатуру запроса, похожую на указанную в задании
         searchFF(start, ext).forEach(System.out::println);
+
+        //второй костыльный вариант, с применением listFiles()
+        searchLF(start, ext).forEach(System.out::println);
 //        search(start, ext).forEach(System.out::println);
+    }
+
+    public static List<Path> searchLF(Path dirname, String ext) {
+        File f = dirname.toFile();
+        FilenameFilter ff = new OnlyExt(ext);
+        return Arrays.stream(Objects.requireNonNull(f.listFiles(ff)))
+                .map(File::toPath)
+                .collect(Collectors.toList());
     }
 
     public static List<Path> searchFF(Path dirname, String ext) {
         File f = dirname.toFile();
         FilenameFilter ff = new OnlyExt(ext);
-        List<Path> result = Arrays.stream(f.list(ff))
+        return Arrays.stream(Objects.requireNonNull(f.list(ff)))
                 .map(p -> Paths.get(p))
                 .collect(Collectors.toList());
-        return result;
     }
 // т.к. пока не могу понять
 //    public static List<Path> search(Path root, String ext) throws IOException {
