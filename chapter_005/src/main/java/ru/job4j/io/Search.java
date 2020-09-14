@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -29,79 +30,58 @@ public class Search {
         String dirname = "c:\\projects\\job4j_junior";  //.
         String ext = "txt";
         Path start = Paths.get(dirname);
-        //прежде чем решить задачу по заданию, проведем экперименты с более простыми вариантами
-        // поиска файлов по расширению. например с помощью интерфейса FilenameFilter
-        // первый костыльный вариант, который имеет сигнатуру запроса, похожую на указанную в задании
-        searchFF(start, ext).forEach(System.out::println);
-
-        //второй костыльный вариант, с применением listFiles()
-        searchLF(start, ext).forEach(System.out::println);
 
         // метод по заданию
-        search(start, ext).forEach(System.out::println);
+        // По итогу данную задачу я не решил даже с помощью ментора, попросил помощи разжевать его.
+        // Для тех, кто читает этот код (и для себя на будущее), но не понимает, попробую разжевать
+        // свои ошибки:
+        // 1. По непонятной причине я вбил себе в голову, что сигнатуру метода менять нельзя!!!
+        // почему я это сделал, не знаю. Я не смог позволить заменить переменную ext на пресловутый
+        // предикат! Крутиля вокруг указанных сигнатур из задания.
+        // 2. Я почему-то думал, что вызов статического метода println() является достаточным условим для вывода
+        // в методе forEach(...). И тем более, опять же по непонятной причине, я не позволил прописать
+        // "повторно" лямбда в методе forEach(...). Хотя, если присмотреться, то это не "повторная" запись
+        // лямбда - вторя лямбда уже прописывается за пределами метода search(), соотвественно
+        // применять ее никто и не запрещаля. Не внимательность...
+        // По итогу, попробую прописать то, что я понял (прежде всего для себя, а уж потов для Вас)...
+        // ТУТ ВНИМАНИЕ!!! ТО ЧТО Я ПРОПИШУ - ЭТО РЕЗУЛЬТАТ РАБОТЫ МОЕГО ВОСПАЛЕННОГО МЫШЛЕНИЯ )))
+        // НЕ ВЕРИТЬ МНЕ НА СЛОВО!!! Причем помните, это всего лишь одно решение из множества!
+        // И ПОМНИТЕ, ЧТО ЗДЕСЬ УКЗАН ПРЕДИКАТ ПОИСКА ОКОНЧАНИЯ НАЗВАНИЯ ФАЙЛА - ЕГО РАСШИРЕНИЯ
+        // В ИНЫХ СЛУЧАЯХ, ПРЕДИКАТ БУДЕТ ПОСТРОЕН ПО НОВОМУ и передан функции search(...)
+        search(start, p -> p
+                .toFile()           // Не понятно, зачем задавать все в Path, чтобы потом преобразовать в File
+                // далее передаем File, тут просто...
+                .getAbsolutePath()  // Вытаскиваем абсолютный путь к файлу (директориям), и тут просто.
+                // далее String
+                .endsWith("." + ext)) // подтягиваем/ФИЛЬТРУЕМ файлы по их окончаниюэтого "абсолютного пути"
+                // в данном случае - расширения файла
+                // далее boolean... тут так же просто...
+                //который по сути и уходит в Predicate как результат сравнения
+                // метод forEach просто выводи полученной содержимое List<Path> по завершению работы
+                // метода search(...)
+            .forEach(p -> System.out.println(p.toAbsolutePath()));
 
-        // альтернативный метод через Pattern
-        searchPattern(start, ext).forEach(System.out::println);
+        System.out.println(System.lineSeparator() +  "==========");
+        System.out.println("Список директорий");
+        search(start, p -> p.toFile().isDirectory())
+                .forEach(p -> System.out.println(p.toAbsolutePath()));
     }
 
-    // т.к. пока не могу понять
-    public static List<Path> search(Path root, String ext) throws IOException {
-        SearchFiles searcher = new SearchFiles(p -> p
-                .toFile()
-                .getName()
-                .endsWith(ext)
-        );
-
-
+//    public static List<Path> search(Path root, String ext) throws IOException {
+    // Как мы видим, изменилась сигнатура метода. В замен стринговой переменной ext, мы получаем
+    // предикат, т.е. отложенную функцию, для проверки на условие сравнения окончания название файла,
+    // например, совпадения расширения.
+    // Еще раз повторюсь, что практически, в предикат "вписать" новое условие поиска файлов,
+    // например, поиск директорий (а почему нет, ведь директория - то же файл по сути ))).
+    public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
+        // здесь создаем объект, имплементирующий интерфес FileVisitor и пробрасываем ему
+        // тот самый предикат, т.е. то самое условие, которое нам нужно проверить
+        // пусть этот объект напряжется )))
+        SearchFiles searcher = new SearchFiles(condition);
+        // вызовим метод (интерфеса), который реагирует на "посещение" файла.
+        // другие методы нас не интересуют
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
-    }
-
-    public static List<Path> searchPattern(Path root, String ext) throws IOException {
-//        SearchFiles searcher = new SearchFiles(p -> {
-//            Arrays.asList(p.toFile().list(
-//                    new FilenameFilter() {
-//                        private Pattern pattern = Pattern.compile(ext);
-//                        @Override
-//                        public boolean accept(File dir, String name) {
-//                            return pattern.matcher(name).matches();
-//                        }
-//                    })
-//            );
-//            return false;   // не понятно, почему здесь требуется return false.
-//        });
-
-//        Files.walkFileTree(root, searcher);
-//        return searcher.getPaths();
-        return null;
-    }
-
-    /**
-     * метод возвращает коллекцию найденных файлов с помощью метода listFiles() и интерфейса FileFilter
-     * @param dirname - рабоачая директория, где производится поиск
-     * @param ext - расширение
-     * @return - возвращает список найденных файлов в виде коллекции
-     */
-    public static List<Path> searchLF(Path dirname, String ext) {
-        File f = dirname.toFile();
-        FilenameFilter ff = new OnlyExt(ext);
-        return Arrays.stream(Objects.requireNonNull(f.listFiles(ff)))
-                .map(File::toPath)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     *  метод возвращает коллекцию найденных файлов с помощью интерфейса FileFilter
-     * @param dirname - рабоачая директория, где производится поиск
-     * @param ext - расширение
-     * @return - возвращает список найденных файлов в виде коллекции
-     */
-    public static List<Path> searchFF(Path dirname, String ext) {
-        File f = dirname.toFile();
-        FilenameFilter ff = new OnlyExt(ext);
-        return Arrays.stream(Objects.requireNonNull(f.list(ff)))
-                .map(p -> Paths.get(p))
-                .collect(Collectors.toList());
     }
 }
 
