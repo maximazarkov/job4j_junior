@@ -45,6 +45,7 @@ public class Zip {
     public void packSingleFile(File source, File target) {
         List<File> sources = new LinkedList<>();
         sources.add(source);
+        // для одного файла метод pickFiles(...) работает, но если напрямую закинуть List, падает
         packFiles(sources, target);
     }
 
@@ -58,20 +59,31 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-        new Zip().packSingleFile(
-                new File("./chapter_005/pom.xml"),
-                new File("./chapter_005/pom.zip")
-        );
-        String dirname = "c:/projects/job4j_junior";
-        File target =new File("./chapter_005/project.zip");
-        String ext = "class";
-        Path start = Paths.get(dirname);
-        List<Path> sourcePaths = search(start, p -> !(p
-                .toFile()
-                .getAbsolutePath()
-                .endsWith("." + ext)));
+        // при архиваировании одного файла проблем с создание .zip файла не происходит
+        // но архив создается какой-то битой конфигурации. Через окно windows он открывается
+        // пустым. Через 7zip открывается, но видно, что структура битая. тем не менее удаляю
+        // @Deprecated
 
-        System.out.println();
-        new Zip().packFiles(convertListPathToFile(sourcePaths), target);
+        //когда пытаюсь заархивировать проект, то архив "./chapter_005/project.zip" создается
+        // не зависимо от вариант запущенной IDEA. Под админом и без формируется ошибка:
+        //java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
+        //at java.base/java.io.FileInputStream.open0(Native Method)
+        //at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+        //at java.base/java.io.FileInputStream.<init>(FileInputStream.java:155)
+        //at java.base/java.io.FileInputStream.<init>(FileInputStream.java:110)
+        //at ru.job4j.io.Zip.packFiles(Zip.java:36)
+        //at ru.job4j.io.Zip.main(Zip.java:75)
+
+        // т.е. создается архив, но при вервой попытке его наполнить, сразу падает FNFE
+
+        ArgZip az = new ArgZip(args);
+        az.valid();
+        Path start = Paths.get(az.directory());
+        List<Path> sourcePaths = search(start,
+                p -> !(p.toFile()
+                    .getAbsolutePath()
+                    .endsWith("." + az.exclude())));
+        new Zip().packFiles(convertListPathToFile(sourcePaths),
+                new File("." + File.separator + "chapter_005" + File.separator + az.output()));
     }
 }
