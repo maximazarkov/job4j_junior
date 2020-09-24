@@ -42,7 +42,7 @@ public class ArgZip {
             String[] key = pattern.split(arg, 2);
             if (key[0].equals("-d")) {
                 d++;
-                if (checkBadParam("^([c-zC-Z]+):(\\\\[a-zA-Z0-9_]*)*$", key[1], "Ошибка в описании пути дериктории")) {
+                if (checkBadParam("^(([c-zC-Z]+):)|\\.(\\\\[a-zA-Z0-9_]*)*$", key[1], "Ошибка в описании пути дериктории")) {
                     return false;
                 }
                 directory = key[1];

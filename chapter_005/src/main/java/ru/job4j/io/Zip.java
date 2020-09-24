@@ -83,6 +83,7 @@ public class Zip {
                 p -> !(p.toFile()
                     .getAbsolutePath()
                     .endsWith("." + az.exclude())));
+        System.out.println(sourcePaths.toString());
         new Zip().packFiles(convertListPathToFile(sourcePaths),
                 new File("." + File.separator + "chapter_005" + File.separator + az.output()));
     }
