@@ -30,9 +30,6 @@ public class SearchFiles implements FileVisitor<Path> {
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         // и везде в методе я возвращал null!
-        if (condition.test(dir)) {
-            paths.add(dir);
-        }
         return FileVisitResult.CONTINUE;
     }
 
