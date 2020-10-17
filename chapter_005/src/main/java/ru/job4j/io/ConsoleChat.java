@@ -7,13 +7,21 @@ package ru.job4j.io;
  *     диалога включая, слова-команды стоп/продолжить/закончить записать в текстовый лог.
  */
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.*;
 
 public class ConsoleChat {
 
+    private static boolean speakBot;
     private final String path;
     private static List<String> values = new ArrayList<>();
+
+    private static final String STOP = "стоп";
+    private static final String CONTINUE = "продолжить";
+    private static final String EXIT = "закончить";
+    private static final String HELP = "помощь";
 
     public ConsoleChat(String path) {
         //Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
@@ -27,10 +35,10 @@ public class ConsoleChat {
      * метод для вывод помощи
      */
     private static void help() {
-        System.out.println("[BOT] > Если хочешь, чтоб я замолчал, набери \"стоп\"");
-        System.out.println("[BOT] > Чтоб я заговорил, набери \"продолжить\"");
-        System.out.println("[BOT] > Для выхода, набери \"закончить\"");
-        System.out.println("[BOT] > Для вызова этой справки, набери \"помощь\"");
+        System.out.println("[BOT] > Если хочешь, чтоб я замолчал, набери \"" + STOP + "\"");
+        System.out.println("[BOT] > Чтоб я заговорил, набери \"" + CONTINUE + "\"");
+        System.out.println("[BOT] > Для выхода, набери \"" + EXIT + "\"");
+        System.out.println("[BOT] > Для вызова этой справки, набери \"" + HELP + "\"");
     }
 
     /**
@@ -48,28 +56,30 @@ public class ConsoleChat {
         }
     }
 
+    private static void checkCommand(String phrase, String command, String message) {
+        if (phrase.equals(command)) {
+            System.out.println(message);
+            speakBot = false;
+        }
+    }
+
     public static void main(String[] args) {
         ConsoleChat textBot = new ConsoleChat("consoleChatBot.txt");
         textBot.load();
 
         Scanner console = new Scanner(System.in);
         String phrase;
-        boolean speakBot = true;
+        speakBot = true;
         System.out.println("[BOT] > Привет. Я Bot по имени BOT");
         help();
 
         do {
 
             phrase = console.nextLine();
-            if (phrase.equals("стоп")) {
-                System.out.println("[BOT] > Захочешь поговорить, напиши \"продолжить\"");
-                speakBot = false;
-            }
-            if (phrase.equals("продолжить")) {
-                System.out.println("[BOT] > Привет! Я рад, что ты со мной захотел поговорить. Напиши мне что-нибудь.");
-                speakBot = true;
-            }
-            if (phrase.equals("помощь")) {
+            checkCommand(phrase, STOP, "[BOT] > Захочешь поговорить, напиши \"" + CONTINUE + "\"");
+            checkCommand(phrase, CONTINUE, "[BOT] > Привет! Я рад, что ты со мной захотел поговорить. Напиши мне что-нибудь.");
+
+            if (phrase.equals(HELP)) {
                 help();
             }
 
@@ -78,7 +88,7 @@ public class ConsoleChat {
             }
 
 
-        } while (!phrase.equals("закончить"));
+        } while (!phrase.equals(EXIT));
 
         System.out.println("[BOT] > Заходи еще!");
 
