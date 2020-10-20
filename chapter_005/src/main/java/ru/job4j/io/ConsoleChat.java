@@ -7,6 +7,8 @@ package ru.job4j.io;
  *     диалога включая, слова-команды стоп/продолжить/закончить записать в текстовый лог.
  */
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ConsoleChat {
@@ -77,11 +79,10 @@ public class ConsoleChat {
      * @param command - текст коммадны для сранения
      * @param sb - параметр запрещающий или разрешающий ответ бота
      * @param message - сообщение бота, которое должно высветится в случае совпадения ответа пользователя и комманды
-     * @param textBot - объект, который имеет метод для записи ответов бота или пользователя в файл
      */
-    private static void checkCommand(String phrase, String command, boolean sb, String message, ConsoleChat textBot) {
+    private void checkCommand(String phrase, String command, boolean sb, String message) {
         if (phrase.equals(command)) {
-            textBot.writeLogChat(message);
+            writeLogChat(message);
             speakBot = sb;
         }
     }
@@ -91,7 +92,7 @@ public class ConsoleChat {
      * @param line - строка для вывода инфомрации в консоль и записи в файл.
      */
     private void writeLogChat(String line) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, StandardCharsets.UTF_8, true))) {
             System.out.println(line);
             writer.write(line);
             writer.write(System.lineSeparator());
@@ -115,35 +116,38 @@ public class ConsoleChat {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ConsoleChat textBot = new ConsoleChat("consoleChatBot.txt", "consoleChatBot.log");
-        textBot.load();
+    private void run() {
+        load();
 
-        textBot.readPhrase();
+        readPhrase();
 
         Scanner console = new Scanner(System.in);
         String phrase;
         speakBot = true;
-        textBot.writeLogChat("[BOT] > Привет. Я Bot по имени BOT");
+        writeLogChat("[BOT] > Привет. Я Bot по имени BOT");
         help();
 
         do {
             phrase = console.nextLine();
-            textBot.writeLogChat("[HUMAN] > " + phrase);
+            writeLogChat("[HUMAN] > " + phrase);
 
-            checkCommand(phrase, STOP, false, "[BOT] > Захочешь поговорить, напиши \"" + CONTINUE + "\"", textBot);
-            checkCommand(phrase, CONTINUE, true, "[BOT] > Привет! Я рад, что ты со мной захотел поговорить. Напиши мне что-нибудь.", textBot);
+            checkCommand(phrase, STOP, false, "[BOT] > Захочешь поговорить, напиши \"" + CONTINUE + "\"");
+            checkCommand(phrase, CONTINUE, true, "[BOT] > Привет! Я рад, что ты со мной захотел поговорить. Напиши мне что-нибудь.");
 
             if (phrase.equals(HELP)) {
                 help();
             }
 
             if (speakBot) {
-                textBot.writeLogChat("[BOT] > " + values.get(new Random().nextInt(values.size())));
+                writeLogChat("[BOT] > " + values.get(new Random().nextInt(values.size())));
             }
         } while (!phrase.equals(EXIT));
 
-        textBot.writeLogChat("[BOT] > Заходи еще!");
+        writeLogChat("[BOT] > Заходи еще!");
+    }
 
+    public static void main(String[] args) throws IOException {
+        ConsoleChat textBot = new ConsoleChat("consoleChatBot.txt", "consoleChatBot.log");
+        textBot.run();
     }
 }
