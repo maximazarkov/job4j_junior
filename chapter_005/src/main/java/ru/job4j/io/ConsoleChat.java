@@ -17,11 +17,14 @@ public class ConsoleChat {
     private final String path;
     private final String pathLogChat;
     private static List<String> values = new ArrayList<>();
+    private static List<String> chatLog = new LinkedList<>();
 
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
     private static final String EXIT = "закончить";
     private static final String HELP = "помощь";
+
+    private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
     /**
      * конструктор
@@ -82,7 +85,8 @@ public class ConsoleChat {
      */
     private void checkCommand(String phrase, String command, boolean sb, String message) {
         if (phrase.equals(command)) {
-            writeLogChat(message);
+            chatLog.add(message);
+            System.out.println(chatLog.get(chatLog.size() - 1));
             speakBot = sb;
         }
     }
@@ -90,13 +94,26 @@ public class ConsoleChat {
     /**
      * метод выполняющий запись данных в файл. Дублирующее сообщение выводится в консоль.
      * @param line - строка для вывода инфомрации в консоль и записи в файл.
+     * @deprecated
      */
     private void writeLogChat(String line) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, StandardCharsets.UTF_8, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8, true))) {
             System.out.println(line);
             writer.write(line);
             writer.write(System.lineSeparator());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeLogChat(List<String> chatLog) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8))){
+            Iterator<String> it = chatLog.iterator();
+            while (it.hasNext()) {
+                writer.write(it.next());
+                writer.write(System.lineSeparator());
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -124,12 +141,15 @@ public class ConsoleChat {
         Scanner console = new Scanner(System.in);
         String phrase;
         speakBot = true;
-        writeLogChat("[BOT] > Привет. Я Bot по имени BOT");
+        chatLog.add("[BOT] > Привет. Я Bot по имени BOT");
+        System.out.println(chatLog.get(chatLog.size() - 1));
         help();
 
         do {
             phrase = console.nextLine();
-            writeLogChat("[HUMAN] > " + phrase);
+
+            chatLog.add("[HUMAN] > " + phrase);
+            System.out.println(chatLog.get(chatLog.size() - 1));
 
             checkCommand(phrase, STOP, false, "[BOT] > Захочешь поговорить, напиши \"" + CONTINUE + "\"");
             checkCommand(phrase, CONTINUE, true, "[BOT] > Привет! Я рад, что ты со мной захотел поговорить. Напиши мне что-нибудь.");
@@ -139,11 +159,15 @@ public class ConsoleChat {
             }
 
             if (speakBot) {
-                writeLogChat("[BOT] > " + values.get(new Random().nextInt(values.size())));
+                chatLog.add("[BOT] > " + values.get(new Random().nextInt(values.size())));
+                System.out.println(chatLog.get(chatLog.size() - 1));
             }
         } while (!phrase.equals(EXIT));
 
-        writeLogChat("[BOT] > Заходи еще!");
+        chatLog.add("[BOT] > Заходи еще!");
+        System.out.println(chatLog.get(chatLog.size() - 1));
+
+        writeLogChat(chatLog);
     }
 
     public static void main(String[] args) throws IOException {
