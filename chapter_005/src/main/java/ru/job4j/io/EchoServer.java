@@ -3,9 +3,6 @@ package ru.job4j.io;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Pattern;
 
 public class EchoServer {
 
@@ -13,8 +10,6 @@ public class EchoServer {
     private static final String HELLO = "Hello, dear friend.";
     private boolean notExit = true;
     private String answer = "";
-    private static final Charset UTF_8 = StandardCharsets.UTF_8;
-    private static final Charset ASCII = StandardCharsets.US_ASCII;
 
     private void checkMsg(String str) {
         boolean b = str.contains("msg=Exit");
@@ -26,7 +21,9 @@ public class EchoServer {
         if (b) {
             answer = HELLO;
         } else {
-            answer = str;
+            if (str.contains("GET /?msg=")) {
+                answer = str.substring(10, (str.length() - 9));
+            }
         }
     }
 
@@ -48,8 +45,7 @@ public class EchoServer {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     out.write("==========".getBytes());
                     out.write(System.lineSeparator().getBytes());
-                    out.write(answer.getBytes(UTF_8));
-//                    out.write(answer.getBytes(ASCII));
+                    out.write(answer.getBytes());
                     out.write(System.lineSeparator().getBytes());
                     out.write("==========".getBytes());
 
