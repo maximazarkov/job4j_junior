@@ -14,15 +14,22 @@ package ru.job4j.io;
 6. В программе должна быть валидация ключей и подсказка.
 * */
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.nio.file.Path;
-import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 public class FindFile {
     private static String sourceDir;
     private static String fileName;
     private static String resultFile;
     private static String typeMask;
+
+    private static String pathOut;
+    private static String pathLog;
+
+    private static StringBuilder data = new StringBuilder();
 
     static void parseArgs(String[] args) {
         if (args.length < 7) {
@@ -54,11 +61,35 @@ public class FindFile {
         }
     }
 
-    public static void main(String[] args) {
+    private static void appendData(StringBuilder sb, String... ad) {
+        for (String d : ad) {
+            sb.append(d);
+            sb.append(" ");
+        }
+        sb.append(System.lineSeparator());
+    }
+
+    public static void main(String[] args) throws IOException {
         parseArgs(args);
-        System.out.println(sourceDir);
-        System.out.println(fileName);
-        System.out.println(typeMask);
-        System.out.println(resultFile);
+
+        appendData(data, "Место поиска:", sourceDir);
+        appendData(data, "Тип маски:", typeMask);
+        appendData(data, "Маска поиска:", fileName);
+        appendData(data, "-----------------");
+        appendData(data, "Результат поиска: ");
+        appendData(data, "-----------------");
+        appendData(data, "Всего файлов в директории: 0");
+        appendData(data, "Найде файлов: 0");
+
+        pathOut = Objects.requireNonNull(Config.class.getClassLoader().getResource("")).getPath();
+//        pathLog = Config
+        System.out.println(pathOut);
+
+        try (BufferedWriter out = new BufferedWriter(
+                new FileWriter(pathOut + File.separator + resultFile))) {
+                out.write(String.valueOf(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
