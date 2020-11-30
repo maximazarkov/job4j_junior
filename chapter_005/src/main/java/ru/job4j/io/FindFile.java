@@ -22,41 +22,67 @@ import java.util.Objects;
 
 public class FindFile {
     private static String sourceDir;
-    private static String fileName;
+    private static String fileNameMask;
     private static String resultFile;
     private static String typeMask;
 
-    private static String pathOut;
     private static String pathLog;
 
     private static StringBuilder data = new StringBuilder();
 
     static void parseArgs(String[] args) {
-        if (args.length < 7) {
-            System.out.println("format: java -jar find.jar -d sourceDir -n mask -m|-f|-r -o resultFile");
-        } else {
+        String FORMATCOMMAND = "format: java -jar find.jar -d sourceDir -n mask -m|-f|-r -o resultFile"
+                + System.lineSeparator()
+                + "параметры:"
+                + System.lineSeparator()
+                + "-d          -ключ для указания директории (sourceDir), в которой будет производиться поиск"
+                + System.lineSeparator()
+                + "-m          -ключ для указания маски (mask), по которой будет производиться поиск"
+                + System.lineSeparator()
+                + "-m|-f|-r    -ключ для указания типа маски. искать по маске, либо -f - полное совпадение имени. -r регулярное выражение"
+                + System.lineSeparator()
+                + "-o          -ключ для указания имени log-файла (resultFile)";
+        int countNormalKeys = 0;
+        if (args.length >= 7) {
             int indexArgs = 0;
             while (indexArgs < args.length) {
-                if (args[indexArgs].equals("-d")) {
-                    sourceDir = args[++indexArgs];
+                switch (args[indexArgs]) {
+                    case "-d" :
+                        sourceDir = args[++indexArgs];
+                        countNormalKeys++;
+                        break;
+                    case "-n" :
+                        fileNameMask = args[++indexArgs];
+                        countNormalKeys++;
+                        break;
+                    case "-m":
+                        typeMask = "mask";
+                        countNormalKeys++;
+                        break;
+                    case "-f":
+                        typeMask = "full";
+                        countNormalKeys++;
+                        break;
+                    case "-r":
+                        typeMask = "regular";
+                        countNormalKeys++;
+                        break;
+                    case "-o":
+                        resultFile = args[++indexArgs];
+                        countNormalKeys++;
+                        break;
+                    default:
+                        System.out.println("Вы ввели недопустимый параметр. Формат комманды:");
+                        System.out.println(FORMATCOMMAND);
                 }
-                if (args[indexArgs].equals("-n")) {
-                    fileName = args[++indexArgs];
-                }
-                if (args[indexArgs].equals("-m")) {
-                    typeMask = "mask";
-                }
-                if (args[indexArgs].equals("-f")) {
-                    typeMask = "full";
-                }
-                if (args[indexArgs].equals("-r")) {
-                    typeMask = "regular";
-                }
-                if (args[indexArgs].equals("-o")) {
-                    resultFile = args[++indexArgs];
-                }
-
                 indexArgs++;
+            }
+
+        } else {
+            System.out.println("Вы ввели недостаточной число параметров. Формат комманды:");
+            System.out.println(FORMATCOMMAND);
+            if (countNormalKeys != 4) {
+
             }
         }
     }
@@ -69,27 +95,37 @@ public class FindFile {
         sb.append(System.lineSeparator());
     }
 
-    public static void main(String[] args) throws IOException {
-        parseArgs(args);
-
-        appendData(data, "Место поиска:", sourceDir);
-        appendData(data, "Тип маски:", typeMask);
-        appendData(data, "Маска поиска:", fileName);
-        appendData(data, "-----------------");
-        appendData(data, "Результат поиска: ");
-        appendData(data, "-----------------");
-        appendData(data, "Всего файлов в директории: 0");
-        appendData(data, "Найде файлов: 0");
-
-        pathOut = Objects.requireNonNull(Config.class.getClassLoader().getResource("")).getPath();
+    private void writeFileLog() {
+        String pathOut = Objects.requireNonNull(Config.class.getClassLoader().getResource("")).getPath();
 //        pathLog = Config
         System.out.println(pathOut);
 
         try (BufferedWriter out = new BufferedWriter(
                 new FileWriter(pathOut + File.separator + resultFile))) {
-                out.write(String.valueOf(data));
+            out.write(String.valueOf(data));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getResultFindFile() {
+        appendData(data, "Место поиска:", sourceDir);
+        appendData(data, "Тип маски:", typeMask);
+        appendData(data, "Маска поиска:", fileNameMask);
+        appendData(data, "-----------------");
+        appendData(data, "Результат поиска: ");
+        appendData(data, "-----------------");
+        appendData(data, "Всего файлов в директории: 0");
+        appendData(data, "Найде файлов: 0");
+    }
+
+    public static void main(String[] args) throws IOException {
+        FindFile ff = new FindFile();
+        ff.parseArgs(args);
+        
+        ff.getResultFindFile();
+
+        ff.writeFileLog();
+
     }
 }
