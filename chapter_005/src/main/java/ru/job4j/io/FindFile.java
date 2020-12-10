@@ -18,6 +18,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -120,21 +122,21 @@ public class FindFile {
         }
     }
 
-    private void getResultFindFile(List<Path> files) {
+    private void getResultFindFile(List<Path> filesList) {
         appendData(data, "Место поиска:", sourceDir);
         appendData(data, "Тип маски:", typeMask);
         appendData(data, "Маска поиска:", fileNameMask);
         appendData(data, "-----------------");
         appendData(data, "Результат поиска: ");
-        for (Path path : files) {
+        for (Path path : filesList) {
             appendData(data, path.toString());
         }
         appendData(data, "-----------------");
-        appendData(data, "Найдено файлов: " + files.size());
+        appendData(data, "Найдено файлов: " + filesList.size());
     }
 
     private List<Path> findFile() throws IOException {
-        LinkedList fileList = new LinkedList();
+        LinkedList<Path> fileList = new LinkedList<>();
         //работает!
         if (typeMask.equals(MFULL)) {
             search(Paths.get(sourceDir), p -> p
@@ -148,8 +150,9 @@ public class FindFile {
             search(Paths.get(sourceDir), p -> p
                     .toFile()
                     .getAbsolutePath()
-//                    .toLowerCase()
-                    .endsWith("*.md")
+                    .toLowerCase()
+                    .contains(fileNameMask)
+//                    .endsWith("*.md")
             ).forEach(p -> fileList.add(p.toAbsolutePath()));
         }
         //todo решиь вопрос с поиском через регулярное выражение
