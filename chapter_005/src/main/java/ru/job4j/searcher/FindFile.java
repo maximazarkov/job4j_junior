@@ -78,7 +78,7 @@ public class FindFile {
 
     public static void main(String[] args) throws IOException {
 //        FindFile ff = new FindFile();
-        ParseArgs pArgs = new ParseArgs(args);
+        ParseArgs pArgs = new ParseArgs();
 
         pArgs.parseArgs(args);
         Predicate<Path> searchRules = new FindPredicateFactory().checksEqualityOfNames(pArgs.typeMask(), pArgs.fileNameMask());

@@ -2,9 +2,7 @@ package ru.job4j.searcher;
 
 import java.io.File;
 
-public class ParseArgs {
-
-    private String[] args;
+class ParseArgs {
 
     private static String sourceDir;
     private static String fileNameMask;
@@ -26,11 +24,7 @@ public class ParseArgs {
             + System.lineSeparator()
             + "-o          -ключ для указания имени log-файла (resultFile)";
 
-    public ParseArgs(String[] args) {
-        this.args = args;
-    }
-
-    public void parseArgs(String[] args) {
+    void parseArgs(String[] args) {
 
         int countNormalKeys = 0;
         if (args.length >= 7) {
@@ -71,29 +65,28 @@ public class ParseArgs {
                 }
                 indexArgs++;
             }
-
-        } else {
-            System.out.println("Вы ввели недостаточной число параметров. Формат комманды:");
-            System.out.println(FORMATCOMMAND);
             if (countNormalKeys != 4) {
                 System.out.println(FORMATCOMMAND);
             }
+        } else {
+            System.out.println("Вы ввели недостаточной число параметров. Формат комманды:");
+            System.out.println(FORMATCOMMAND);
         }
     }
 
-    public String sourceDir() {
+    String sourceDir() {
         return sourceDir;
     }
 
-    public String fileNameMask() {
+    String fileNameMask() {
         return fileNameMask;
     }
 
-    public String resultFile() {
+    String resultFile() {
         return resultFile;
     }
 
-    public String typeMask() {
+    String typeMask() {
         return typeMask;
     }
 }
