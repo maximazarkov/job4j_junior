@@ -12,18 +12,13 @@ public class EchoServer {
     private String answer = "";
 
     private void checkMsg(String str) {
-        boolean b = str.contains("msg=Exit");
-        if (b) {
+        if (str.contains("msg=Exit")) {
             notExit = false;
             answer = EXIT;
-        }
-        b = str.contains("msg=Hello");
-        if (b) {
+        } else if (str.contains("msg=Hello")) {
             answer = HELLO;
         } else {
-            if (str.contains("GET /?msg=")) {
-                answer = str.substring(10, (str.length() - 9));
-            }
+            answer = str.substring(10, (str.length() - 9));
         }
     }
 
@@ -34,13 +29,10 @@ public class EchoServer {
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
-                    String str;
+                    String str  = in.readLine();
+                    checkMsg(str);
                     while (!(str = in.readLine()).isEmpty()) {
-
                         System.out.println(str);
-
-                        checkMsg(str);
-
                     }
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     out.write("==========".getBytes());
@@ -48,7 +40,6 @@ public class EchoServer {
                     out.write(answer.getBytes());
                     out.write(System.lineSeparator().getBytes());
                     out.write("==========".getBytes());
-
                 }
             }
         }
