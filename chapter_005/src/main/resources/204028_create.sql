@@ -36,14 +36,14 @@ CREATE TABLE t_user (
 -- Например, заявка на материалы, заявка на консультацию и т.п. В общем заранее определенная категория заявки
 CREATE TABLE category (
     id_category serial PRIMARY KEY,
-    category_name VARCHAR(20)
+    category_name VARCHAR(100)
 );
 
 -- Состояние заявки.
 -- Например, на рассмотрении, отклоненена, утверждена к выполнению, выполнена
 CREATE TABLE state (
  	id_state serial PRIMARY KEY,
-	state_name VARCHAR(20)
+	state_name VARCHAR(100)
 );
 
 -- Заявки.
@@ -62,7 +62,7 @@ CREATE TABLE item (
 -- Комментарии Заявок.
 CREATE TABLE comments (
     id_comments serial PRIMARY KEY,
-    msg VARCHAR(20),
+    msg VARCHAR(200),
 	-- item - comments = one-to-many - у заявки может быть много комментариев
 	item_id int references item(id_item)
 );
