@@ -1,10 +1,37 @@
 -- Автор Азарков Максим Николаевич
--- Версия 2021-01-12 v.1.2
+-- Версия 2021-01-18 v.1.3
 
 -- Подключимся к БД
 \c attaches
 
 --- MAIN TABLE ---
+-- Комментарии Заявок.
+CREATE TABLE comments (
+    id_comments serial PRIMARY KEY,
+    commentText VARCHAR(200)
+);
+
+-- Приложенные Файлы.
+CREATE TABLE attachs (
+    id_attachs serial PRIMARY KEY,
+    nameFile VARCHAR(20)
+);
+
+-- Заявки.
+CREATE TABLE item (
+    id_item serial PRIMARY KEY,
+    name VARCHAR(50),
+	comments_id int references comments(id_comments),	-- item - comments = one-to-many
+	attaches_id int references attachs(id_attachs)		-- item - attachs = one-to-many
+);
+
+-- Пользователи.
+CREATE TABLE t_user (
+    id_user serial PRIMARY KEY,
+    name VARCHAR(20),
+	item_id int references item(id_item) 				-- item - user = many-to-one
+);
+
 -- Роли.
 CREATE TABLE role (
     id_role serial PRIMARY KEY,
@@ -14,7 +41,7 @@ CREATE TABLE role (
 -- Права ролей.
 CREATE TABLE rules (
     id_rules serial PRIMARY KEY,
-    name VARCHAR(20)
+    name VARCHAR(40)
 );
 
 CREATE TABLE role_rules (
@@ -43,35 +70,6 @@ CREATE TABLE category (
 -- Например, на рассмотрении, отклоненена, утверждена к выполнению, выполнена
 CREATE TABLE state (
  	id_state serial PRIMARY KEY,
-	state_name VARCHAR(100)
+	stateItem VARCHAR(30),
+	item_id int references item(id_item)	-- item - state = many-to-one
 );
-
--- Заявки.
--- Для того, чтобы оформить заявку, сначал нужно указать (выгрузить) тип и состояние заявки. берется
-CREATE TABLE item (
-    id_item serial PRIMARY KEY,
-    item_txt VARCHAR(20),
-	-- item - category = many-to-one - заявок может быть много, а категория только одна для каждой заявки
-	category_id int references category(id_category),
-	-- item - state = many-to-one - состояние так же выбираем и заранее подготовленного списка
-	state_id int references state(id_state),
-	-- item - user = many-to-one - мого заявок на одного пользователя
-	user_id int references t_user(id_user)
-);
-
--- Комментарии Заявок.
-CREATE TABLE comments (
-    id_comments serial PRIMARY KEY,
-    msg VARCHAR(200),
-	-- item - comments = one-to-many - у заявки может быть много комментариев
-	item_id int references item(id_item)
-);
-
--- Приложенные Файлы.
-CREATE TABLE attachs (
-    id_attachs serial PRIMARY KEY,
-    attachs_name VARCHAR(20),
-	-- item - attachs = one-to-many. У коментария могут быть привязаны несколько файлов
-	item_id int references item(id_item)
-);
-

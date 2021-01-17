@@ -1,46 +1,67 @@
 -- јвтор јзарков ћаксим Ќиколаевич
--- ¬ерси€ 2021-01-12 v.1.0
+-- ¬ерси€ 2021-01-18 v.1.3
+-- задание интересно тем, что создает впечатление создание Ѕƒ с "огорода"
+-- обычно думаешь, что сначал создаетс€ пользователь, затем все зависимости дл€ него, а на самом
+-- деле сначала прогружаютс€ все зависимости, а только потом создаетс€ запись о пользователе.
 
 -- ѕодключимс€ к Ѕƒ
 \c attaches
 
-INSERT INTO role (name)
-VALUES 
-	('Admin'),('User');
-
-INSERT INTO rules (name)
-VALUES 
-	('read'),('write');
-
-
-INSERT INTO role_rules (role_id, rules_id)
-VALUES (1,1), (1,2), (2,1);
-
-INSERT INTO t_user (name, role_id)
-VALUES ('Vasya', 1), ('Vova', 2);
-
-INSERT INTO category (category_name)
-VALUES ('за€вка на проверку'),('за€вка на консультацию');
-
-INSERT INTO state (state_name)
+-- »так, будет считать, что пользователь создал некую за€вку, по этому, все зависимости создает именно от записи
+-- сначала записываем коммент к за€вке пользовател€
+INSERT INTO
+    comments (commentText)
 VALUES
-	('на рассмотрении'),
-	('отклоненена'),
-	('утверждена к выполнению'),
-	('выполнена');
+    ('ƒопустим здесь текст комментари€');
 
-INSERT INTO item (item_txt, category_id, state_id, user_id)
-VALUES('за€вка 1',1,1,1), ('за€вка 2',2,4,1);
+-- ну и допустим, что пользователь прикрутил какой-то файл
+INSERT INTO
+    attachs (nameFile)
+VALUES
+    ('simple.file');
 
-INSERT INTO comments (msg, item_id)
-VALUES ('коментарий', 2);
+-- теперь соберем за€вку в одно место. решил пол€ закоментарить
+INSERT INTO
+    item (name, comments_id, attaches_id)
+VALUES
+    ('кака€-то за€вка', 1, 1);
 
--- SELECT * FROM role;
--- SELECT * FROM rules;
--- SELECT * FROM role_rules;
--- SELECT * FROM t_user;
-SELECT * FROM category;
-SELECT * FROM state;
-SELECT * FROM item;
-SELECT * FROM comments;
-SELECT * FROM attachs;
+-- теперь создадим пользовател€ и прицепим к нему его "опус"
+INSERT INTO
+    t_user (name, item_id)
+VALUES
+    ('»ван »ванов', 1);
+
+-- теперь укажим, кем €вл€етс€ данный пользователь
+INSERT INTO
+    role (name, user_id)
+VALUES
+    ('јдмин', 1);
+
+-- ќбычно роли задаютс€ заранее, но € ввиду эти роли именно сейчас, чтобы было пон€тнее
+INSERT INTO
+    rules (name)
+VALUES
+    ('чтение'),
+    ('запись');
+
+--  теперь укаже, что у пользовател€ есть полный доуступ на чтение и на запись
+INSERT INTO
+    role_rules (role_id, rules_id)
+VALUES
+    (1, 1),
+    (1, 2);
+
+-- далее есть некоторые сомнени€ с правльной структурой таблицы. дело в том, что одинаковые категории
+-- будут дублироватьс€, а так же может возникуть ситуаци€, когда к одной за€вке может быть прив€зано
+-- несколько категорий...
+INSERT INTO
+    category (name, item_id)
+VALUES
+    ('перва€ категори€', 1);
+
+-- “оже самое можно сказать и про состо€ние за€вки.
+INSERT INTO
+    state (stateItem, item_id)
+VALUES
+    ('выполн€етс€', 1);
