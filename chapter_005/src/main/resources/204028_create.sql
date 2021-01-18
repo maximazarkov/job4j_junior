@@ -35,7 +35,8 @@ CREATE TABLE t_user (
 -- Роли.
 CREATE TABLE role (
     id_role serial PRIMARY KEY,
-    name VARCHAR(20)
+    name VARCHAR(20),
+    user_id int references t_user(id_user)    -- user - role = many-to-one
 );
 
 -- Права ролей.
@@ -51,19 +52,12 @@ CREATE TABLE role_rules (
     rules_id int references rules(id_rules)
 );
 
--- Пользователи.
-CREATE TABLE t_user (
-    id_user serial PRIMARY KEY,
-    name VARCHAR(20),
-	-- user - role = many-to-one - прикручиваем какую-то одну роль
-	role_id int references role(id_role)
-);
-
 -- Категории заявки.
 -- Например, заявка на материалы, заявка на консультацию и т.п. В общем заранее определенная категория заявки
 CREATE TABLE category (
     id_category serial PRIMARY KEY,
-    category_name VARCHAR(100)
+    name VARCHAR(100),
+    item_id int references item(id_item)	-- item - category = many-to-one
 );
 
 -- Состояние заявки.
