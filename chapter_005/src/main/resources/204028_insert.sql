@@ -1,46 +1,71 @@
 -- Автор Азарков Максим Николаевич
--- Версия 2021-01-12 v.1.0
+-- Версия 2021-01-19 v.2.0
 
 -- Подключимся к БД
 \c attaches
 
-INSERT INTO role (name)
-VALUES 
-	('Admin'),('User');
-
-INSERT INTO rules (name)
-VALUES 
-	('read'),('write');
-
-
-INSERT INTO role_rules (role_id, rules_id)
-VALUES (1,1), (1,2), (2,1);
-
-INSERT INTO t_user (name, role_id)
-VALUES ('Vasya', 1), ('Vova', 2);
-
-INSERT INTO category (category_name)
-VALUES ('заявка на проверку'),('заявка на консультацию');
-
-INSERT INTO state (state_name)
+-- укажим, возможнжые роли
+INSERT INTO
+    role (name)
 VALUES
-	('на рассмотрении'),
-	('отклоненена'),
-	('утверждена к выполнению'),
-	('выполнена');
+    ('Админ'),
+    ('Пользователь');
 
-INSERT INTO item (item_txt, category_id, state_id, user_id)
-VALUES('заявка 1',1,1,1), ('заявка 2',2,4,1);
+-- теперь создадим пользователей и прицепим к ним их роли
+INSERT INTO
+    t_user (name, role_id)
+VALUES
+    ('Иван Иванов', 1),
+    ('Петр Петров', 2),
+    ('Степан Степанов', 2);
 
-INSERT INTO comments (msg, item_id)
-VALUES ('коментарий', 2);
+-- Создадим правила
+INSERT INTO
+    rules (name)
+VALUES
+    ('Чтение'),
+    ('Запись');
 
--- SELECT * FROM role;
--- SELECT * FROM rules;
--- SELECT * FROM role_rules;
--- SELECT * FROM t_user;
-SELECT * FROM category;
-SELECT * FROM state;
-SELECT * FROM item;
-SELECT * FROM comments;
-SELECT * FROM attachs;
+--  теперь распределим правила и роли
+INSERT INTO
+    role_rules (role_id, rules_id)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 1);
+
+-- Придумаем нехитрые категории,...
+INSERT INTO
+    category (name)
+VALUES
+    ('Важно'),
+    ('Средняя важность'),
+    ('Низкая важность');
+
+-- ...состояния.
+INSERT INTO
+    state (stateItem)
+VALUES
+    ('Заявка принята. В ожидании на проверку'),
+    ('Принята на проверку'),
+    ('Заявка проверена, согласована'),
+    ('Заявка отклонена, не согласована');
+
+-- Теперь соберем заявку
+INSERT INTO
+    item (name, user_id, category_id, state_id)
+VALUES
+    ('Дайте пива и рыбы!', 1, 1, 1),
+    ('Нужна бумага для принтера', 2, 2, 3);
+
+-- ну и допустим, что админ прикрутил картинку с пивом
+INSERT INTO
+    attachs (nameFile, item_id)
+VALUES
+    ('beer.file', 1);
+
+-- и прокоментировал свое желание!
+INSERT INTO
+    comments (commentText, item_id)
+VALUES
+    ('И позовите друзей!!! )))', 1);
