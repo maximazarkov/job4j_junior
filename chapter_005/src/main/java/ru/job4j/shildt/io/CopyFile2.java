@@ -16,7 +16,7 @@ public class CopyFile2 {
         int i;
 
         // проверим, что параметры - имена имен переданы программе
-        if (args.length !=2) {
+        if (args.length != 2) {
             System.out.println("необходимо указать названия исходного и целевого файлов.");
             return;
         }
@@ -26,7 +26,9 @@ public class CopyFile2 {
 
             do {
                 i = fin.read();
-                if (i != -1) fout.write(i);
+                if (i != -1) {
+                    fout.write(i);
+                }
             } while (i != -1);
         } catch (IOException e) {
             System.out.println("Ошибка ввода-вывода: " + e);

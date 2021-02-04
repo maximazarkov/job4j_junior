@@ -18,7 +18,7 @@ public class CopyFile {
         FileOutputStream fout = null;
 
         // проверим, что параметры - имена имен переданы программе
-        if (args.length !=2) {
+        if (args.length != 2) {
             System.out.println("необходимо указать названия исходного и целевого файлов.");
             return;
         }
@@ -30,18 +30,24 @@ public class CopyFile {
 
             do {
                 i = fin.read();
-                if (i != -1) fout.write(i);
+                if (i != -1) {
+                    fout.write(i);
+                }
             } while (i != -1);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (fin != null) fin.close();
+                if (fin != null) {
+                    fin.close();
+                }
             } catch (IOException e2) {
                 System.out.println("Ошибка закрытия файла ввода - источник");
             }
             try {
-                if (fout != null) fout.close();
+                if (fout != null) {
+                    fout.close();
+                }
             } catch (IOException e2) {
                 System.out.println("Ошибка закрытия файла вывода - приемник");
             }

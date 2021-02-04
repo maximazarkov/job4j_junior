@@ -28,11 +28,11 @@ class FindPredicateFactory {
         @Override
         public boolean test(Path path) {
             return pattern
-                    .matcher(                   //Создает Matcher, который будет сопоставлять заданные
-                                                //входные данные с этим шаблоном.
-                            path                //выделяем имя файла из полного пути...
-                                    .toFile()
-                                    .getName()
+                    //Создает Matcher, который будет сопоставлять заданные входные данные с этим шаблоном.
+                    //выделяем имя файла из полного пути...
+                    .matcher(path
+                            .toFile()
+                            .getName()
                     ).matches();                //На этом этапе пытаемся сравнить полученный Matcher с шаблоном
         }
     }

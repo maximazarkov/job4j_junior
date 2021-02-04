@@ -39,7 +39,7 @@ public class ConsoleChat {
         //psvm и через тесты, и через тревис
         this.path = Objects.requireNonNull(Config.class.getClassLoader().getResource(path)).getFile();
             try (FileWriter file =
-                         new FileWriter (
+                         new FileWriter(
                                  (Config.class.getClassLoader().getResource("")).getPath()
                                          + pathLogChat)
             ) {
@@ -107,7 +107,7 @@ public class ConsoleChat {
     }
 
     private void writeLogChat(List<String> chatLog) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8))) {
             Iterator<String> it = chatLog.iterator();
             while (it.hasNext()) {
                 writer.write(it.next());

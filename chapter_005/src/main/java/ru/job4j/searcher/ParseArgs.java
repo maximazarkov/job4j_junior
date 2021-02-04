@@ -34,7 +34,7 @@ class ParseArgs {
                     case "-d" :
                         sourceDir = args[++indexArgs];
                         File file = new File(sourceDir);
-                        if(!file.exists()) {
+                        if (!file.exists()) {
                             System.out.println(sourceDir + " папка не существует");
                         }
                         countNormalKeys++;

@@ -15,7 +15,7 @@ public class ShowFile4 {
         int i;
 
         //сначала убедимся, что имя файла указано
-        if(args.length != 1) {
+        if (args.length != 1) {
             System.out.println("укажите имя файла как параметр");
             return;
         }
@@ -26,7 +26,9 @@ public class ShowFile4 {
         try (FileInputStream fin = new FileInputStream(args[0])) {
             do {
                 i = fin.read();
-                if (i != -1) System.out.print((char) i);
+                if (i != -1) {
+                    System.out.print((char) i);
+                }
             } while (i != -1);
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");

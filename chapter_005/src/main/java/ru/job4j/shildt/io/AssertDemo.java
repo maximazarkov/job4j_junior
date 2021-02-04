@@ -22,7 +22,7 @@ public class AssertDemo {
             System.out.println("n = " + n);
         }
     }
-}//~~~
+} //~~~
 //Запуск программы необходимо выполнять с ключем -ea
 // C:\projects\job4j_junior>java -ea -classpath .\chapter_005\target\classes ru.job4j.shildt.io.AssertDemo
 //OutPut

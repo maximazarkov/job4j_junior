@@ -32,13 +32,13 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "name='" + name + '\'' +
-                ", salary=" + salary +
-                ", year=" + year +
-                ", month=" + month +
-                ", day=" + day +
-                '}';
+        return "Employee{"
+                + "name='" + name + '\''
+                + ", salary=" + salary
+                + ", year=" + year
+                + ", month=" + month
+                + ", day=" + day
+                + '}';
     }
 }
 

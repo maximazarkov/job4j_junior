@@ -39,7 +39,9 @@ public class ShowFile2 {
         try {
             do {
                 i = fin.read();
-                if (i != -1) System.out.print((char) i);
+                if (i != -1) {
+                    System.out.print((char) i);
+                }
             } while (i != -1);
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла");

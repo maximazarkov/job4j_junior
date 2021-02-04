@@ -42,7 +42,7 @@ public class TextFileTest {
      * @param employees массив записей о сотрудниках
      * @param out Поток записей выводимых данных
      */
-    private static void writeData(Employee[] employees, PrintWriter out ) throws IOException {
+    private static void writeData(Employee[] employees, PrintWriter out) throws IOException {
         // записать количество сотрудников
         out.println(employees.length);
         for (Employee e : employees) {

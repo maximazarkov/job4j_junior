@@ -17,6 +17,6 @@ public class BRReadLines {
         do {
             str = br.readLine();
             System.out.println(str);
-        } while(!str.equals("стоп"));
+        } while (!str.equals("стоп"));
     }
 }

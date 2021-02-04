@@ -31,7 +31,8 @@ public class EchoServer {
                              new InputStreamReader(socket.getInputStream()))) {
                     String str  = in.readLine();
                     checkMsg(str);
-                    while (!(str = in.readLine()).isEmpty()) {
+                    str = in.readLine();
+                    while (!str.isEmpty()) {
                         System.out.println(str);
                     }
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
