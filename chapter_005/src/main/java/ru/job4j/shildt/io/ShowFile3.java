@@ -34,7 +34,9 @@ public class ShowFile3 {
             fin = new FileInputStream((args[0]));
             do {
                 i = fin.read();
-                if (i != -1) System.out.print((char) i);
+                if (i != -1) {
+                    System.out.print((char) i);
+                }
             } while (i != -1);
 //         данный код...
 //        } catch (FileNotFoundException e) {
@@ -47,7 +49,9 @@ public class ShowFile3 {
         } finally {
             // закрываем файл при выходе из блока оператора try
             try {
-                if (fin != null) fin.close();
+                if (fin != null) {
+                    fin.close();
+                }
             } catch (IOException e) {
                 System.out.println("Ошибка закрытия файла");
             }

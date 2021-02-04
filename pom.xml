@@ -79,9 +79,17 @@
             <artifactId>javafx-controls</artifactId>
             <version>11.0.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.18</version>
+        </dependency>
     </dependencies>
 
-	<!-- подключитм плагины для maven -->
+
+
+    <!-- подключитм плагины для maven -->
 	<!-- Петр обещал про плагины снять отдельное видео -->
 	<build>
         <plugins>

@@ -9,7 +9,7 @@ public class DirList {
 
         if (f1.isDirectory()) {
             System.out.println("Каталог " + dirname);
-            String s[] = f1.list();
+            String[] s = f1.list();
 
             for (int i = 0; i < s.length; i++) {
                 File f = new File(dirname + "/" + s[i]);

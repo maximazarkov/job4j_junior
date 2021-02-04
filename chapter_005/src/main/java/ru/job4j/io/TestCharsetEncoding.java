@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
-public class TestCharsetEncoding{
+public class TestCharsetEncoding {
     public static void main(String[] args) throws FileNotFoundException {
         String path = Objects.requireNonNull(Config.class.getClassLoader().getResource("textCharsetEncoding.txt").getFile());
         UsageEncoding encoding = new UsageEncoding();
