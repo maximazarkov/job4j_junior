@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-// программа взята из главы 13
-// простой текстовый редактор
+/** Программа взята из главы 13
+ * простой текстовый редактор
+ */
 public class TinyEdit {
     public static void main(String[] args) throws IOException {
-        // Создать поток ввода типа BufferedReader, используя стандартный поток ввода System.in
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] str = new String[100];
         System.out.println("Введите строки текста.");

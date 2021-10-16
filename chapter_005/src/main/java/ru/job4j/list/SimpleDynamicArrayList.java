@@ -16,7 +16,7 @@ public class SimpleDynamicArrayList<E> implements SimpleContainer<E> {
     /**
      * The default initial capacity - MUST be a power of two.
      */
-    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+    static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
 
     /**
      * контейнер

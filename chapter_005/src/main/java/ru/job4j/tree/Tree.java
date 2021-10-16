@@ -62,8 +62,9 @@ public class Tree<E extends  Comparable<E>> implements SimpleTree<E> {
      */
     public boolean isBinary() {
 
-        //метод должен циклически пройти по всем элементам дерева.
+        /** Метод должен циклически пройти по всем элементам дерева.
         //Для этого можно использовать итератор из предыдущего задания.
+         */
         boolean rsl = true;
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);

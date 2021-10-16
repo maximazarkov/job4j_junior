@@ -14,19 +14,20 @@ public class FindFileTest {
     @Test
     @Ignore
     public void whenArgsNeq7() {
-//        FindFile ff = new FindFile();
+/**        FindFile ff = new FindFile();
 //        String[] args = new String[]{"-d", "c:\\", "-m"};
 //        ff.parseArgs(args);
 //        assertNull(sourceDir);
 //        assertNull(fileName);
 //        assertNull(resultFile);
 //        assertNull(typeMask);
+ */
     }
 
     @Test
     @Ignore
     public void whenArgsMask() {
-//        //-n mask -m|-f|-r -o resultFile
+/**        //-n mask -m|-f|-r -o resultFile
 //        String sourceDir = null;
 //        String fileName = null;
 //        String resultFile = null;
@@ -38,5 +39,6 @@ public class FindFileTest {
 //        assertThat(fileName, is("*.txt"));
 //        assertThat(resultFile, is("log.txt"));
 //        assertThat(typeMask, is("mask"));
+ */
     }
 }

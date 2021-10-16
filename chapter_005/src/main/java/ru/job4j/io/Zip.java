@@ -1,16 +1,11 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,11 +23,12 @@ public class Zip {
                 source = it.next();
                 zip.putNextEntry(new ZipEntry(source.getPath()));
                 try (BufferedInputStream out = new BufferedInputStream(
-                        // на этом месте при архивации одного файла или директории, ошибки не происходит
+                        /** На этом месте при архивации одного файла или директории, ошибки не происходит
                         // если файлов архивируется много, то программа падает с ошибкой
                         // java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
-                        // при этом запись c:\projects\job4j_junior выглядит как файл без расширенияи на
-                        // директорию не похож. видимо в этом проблема
+                        // при этом запись c:\projects\job4j_junior выглядит как файл без расширения на
+                        // директорию не похож. Видимо в этом проблема
+                         */
                         new FileInputStream(source.getPath()))) {
                     zip.write(out.readAllBytes());
                 }
@@ -45,7 +41,7 @@ public class Zip {
     public void packSingleFile(File source, File target) {
         List<File> sources = new LinkedList<>();
         sources.add(source);
-        // для одного файла метод pickFiles(...) работает, но если напрямую закинуть List, падает
+        /** для одного файла метод pickFiles(...) работает, но если напрямую закинуть List, падает */
         packFiles(sources, target);
     }
 
@@ -59,23 +55,24 @@ public class Zip {
     }
 
     public static void main(String[] args) throws IOException {
-        // при архиваировании одного файла проблем с создание .zip файла не происходит
-        // но архив создается какой-то битой конфигурации. Через окно windows он открывается
-        // пустым. Через 7zip открывается, но видно, что структура битая. тем не менее удаляю
-        // @Deprecated
 
-        //когда пытаюсь заархивировать проект, то архив "./chapter_005/project.zip" создается
-        // не зависимо от вариант запущенной IDEA. Под админом и без формируется ошибка:
-        //java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
-        //at java.base/java.io.FileInputStream.open0(Native Method)
-        //at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
-        //at java.base/java.io.FileInputStream.<init>(FileInputStream.java:155)
-        //at java.base/java.io.FileInputStream.<init>(FileInputStream.java:110)
-        //at ru.job4j.io.Zip.packFiles(Zip.java:36)
-        //at ru.job4j.io.Zip.main(Zip.java:75)
+/** При архивировании одного файла проблем с созданием .zip файла не происходит, но архив создается
+ * какой-то битой конфигурации. Через окно windows он открывается
+ * пустым. Через 7zip открывается, но видно, что структура битая. Тем не менее удаляю
+ * @Deprecated
 
-        // т.е. создается архив, но при вервой попытке его наполнить, сразу падает FNFE
+ *когда пытаюсь заархивировать проект, то архив "./chapter_005/project.zip" создается
+ * не зависимо от вариант запущенной IDEA. Под админом и без формируется ошибка:
+ * java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
+ * at java.base/java.io.FileInputStream.open0(Native Method)
+ * at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+ * at java.base/java.io.FileInputStream.<init>(FileInputStream.java:155)
+ * at java.base/java.io.FileInputStream.<init>(FileInputStream.java:110)
+ * at ru.job4j.io.Zip.packFiles(Zip.java:36)
+ * at ru.job4j.io.Zip.main(Zip.java:75)
 
+ * т.е. создается архив, но при первой попытке его наполнить, сразу падает FNFE
+*/
         ArgZip az = new ArgZip(args);
         az.valid();
         Path start = Paths.get(az.directory());

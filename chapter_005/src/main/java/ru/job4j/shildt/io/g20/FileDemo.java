@@ -2,7 +2,6 @@ package ru.job4j.shildt.io.g20;
 
 import java.io.File;
 
-//продемонстрировать применение некоторых методов из класса File
 public class FileDemo {
     static void p(String s) {
         System.out.println(s);
@@ -25,6 +24,5 @@ public class FileDemo {
         p("Количество доступных байтов, доступных в на диске: " + f1.getFreeSpace() + " байт.");
         p("Размер диска: " + f1.getTotalSpace() + " байт.");
         p("Количество пригодных для употребления свободных байтов на диске: " + f1.getUsableSpace() + " байт.");
-
     }
 }

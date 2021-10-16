@@ -42,9 +42,9 @@ public class SimpleListTest {
     }
 
     public void wildTest() {
-//        SimpleList<A> list = new SimpleList<>(10);
+/**        SimpleList<A> list = new SimpleList<>(10); */
         SimpleList<B> list = new SimpleList<>(10);
-//        list.add(new A());
+/**        list.add(new A()); */
         list.add(new B());
         list.add(new C());
 
@@ -54,7 +54,6 @@ public class SimpleListTest {
     }
 
     public void print(SimpleList<?> list) {
-        //todo print
     }
 
     public void printUpper(SimpleList<? extends B> list) {
@@ -75,18 +74,20 @@ public class SimpleListTest {
     }
 
     /**
-     * отпала актуальность в тесте, т.к. добавили класс Stack и усовершенствовали
+     * Отпала актуальность в тесте, т.к. добавили класс Stack и усовершенствовали
      * конструктор SimpleList для вытаскивания генерика с помощью рефлексии
      * @deprecated
      */
     @Test
     public void whenCreateIntShouldReturnInt() {
+        /**
 ////        SimpleList<Integer> simpleList = new SimpleList<Integer>(4);
 //        SimpleList<Integer> simpleList = new SimpleList<>(4);
 //        simpleList.add(2);
 //        Integer result = simpleList.get(1);
 //
 //        assertThat(result, is(2));
+         */
     }
 
 
@@ -108,7 +109,5 @@ public class SimpleListTest {
         for (String s : set) {
             System.out.println(s + " " + s.hashCode());
         }
-
     }
-
 }

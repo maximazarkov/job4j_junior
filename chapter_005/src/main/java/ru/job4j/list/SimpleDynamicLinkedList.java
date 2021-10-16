@@ -50,11 +50,10 @@ public class SimpleDynamicLinkedList<E> implements Iterable<E> {
      * Unlinks non-null last node l.
      */
     private E unlinkLast(Node<E> l) {
-        // assert l == last && l != null;
         final E element = l.item;
         final Node<E> prev = l.prev;
         l.item = null;
-        l.prev = null; // help GC
+        l.prev = null;
         last = prev;
         if (prev == null) {
             first = null;
@@ -140,7 +139,6 @@ public class SimpleDynamicLinkedList<E> implements Iterable<E> {
             private int nextIndex;
 
             ListItr(int index) {
-                // assert isPositionIndex(index);
                 next = (index == size) ? null : (Node<E>) node(index);
                 nextIndex = index;
             }
@@ -174,21 +172,19 @@ public class SimpleDynamicLinkedList<E> implements Iterable<E> {
      * Returns the (non-null) Node at the specified element index.
      */
     Node<E> node(int index) {
-        // assert isElementIndex(index);
-
+        Node<E> x;
         if (index < (size >> 1)) {
-            Node<E> x = first;
+            x = first;
             for (int i = 0; i < index; i++) {
                 x = x.next;
             }
-            return x;
         } else {
-            Node<E> x = last;
+            x = last;
             for (int i = size - 1; i > index; i--) {
                 x = x.prev;
             }
-            return x;
         }
+        return x;
     }
 
     private static class Node<E> {

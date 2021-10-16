@@ -1,6 +1,5 @@
 package ru.job4j.list;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -77,7 +76,7 @@ public class NodeTest {
     }
 
     private static boolean hasCircle(Node first) {
-        boolean result = false;      // по умолчанию, нет
+        boolean result = false;
         Node nextNode = first;
         Node nextNextNode = first;
 

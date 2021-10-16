@@ -39,7 +39,6 @@ public class InstanceOf {
 
         System.out.println();
 
-        //сравнить с порожденными типами
         A ob;
 
         ob = d;
@@ -64,7 +63,6 @@ public class InstanceOf {
 
         System.out.println();
 
-        // Все объекты могут быть приведены к типу Obоect
         if (a instanceof Object) {
             System.out.println("a можно привести к типу Object");
         }

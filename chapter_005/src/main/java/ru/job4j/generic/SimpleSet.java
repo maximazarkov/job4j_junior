@@ -25,17 +25,19 @@ public class SimpleSet<E> implements Iterable<E> {
                     newSl.add(element);
                 }
             }
+            /**
 //            System.arraycopy(sl, 0, newSl, 0, size);
+             */
             this.sl = newSl;
         }
         boolean containValue = true;
         if (modCount == 0) {
             containValue = false;
         } else {
-            Iterator<E> cont = this.iterator();
-            while (cont.hasNext()) {
-                if (!cont.next().equals(value)) {
+            for (E e : this) {
+                if (!e.equals(value)) {
                     containValue = false;
+                    break;
                 }
             }
         }
