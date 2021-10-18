@@ -23,17 +23,18 @@ class FindPredicateFactory {
         /**
          * Переопределенный метод, сравнивающий через регулярное выражение имя файла, переданного через
          * параметр path.
+         * В тесте создается Matcher, который будет сопоставлять заданные входные данные с этим шаблоном.
+         * выделяем имя файла из полного пути...
          * @param path - путь к файлу.
          */
         @Override
         public boolean test(Path path) {
             return pattern
-                    .matcher(                   //Создает Matcher, который будет сопоставлять заданные
-                                                //входные данные с этим шаблоном.
-                            path                //выделяем имя файла из полного пути...
-                                    .toFile()
-                                    .getName()
-                    ).matches();                //На этом этапе пытаемся сравнить полученный Matcher с шаблоном
+
+                    .matcher(path
+                            .toFile()
+                            .getName()
+                    ).matches();
         }
     }
 
@@ -87,6 +88,4 @@ class FindPredicateFactory {
 
         return  result.toString();
     }
-
-
 }

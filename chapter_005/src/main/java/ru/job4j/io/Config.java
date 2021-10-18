@@ -12,10 +12,11 @@ public class Config {
     private final Map<String, String> values = new HashMap<>();
 
     public Config(String path) {
-        //Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
+        /** Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
         //как параметр конструктора, получаем имя файла, который лежит в папке src/main/resources
-        //после компиляции файл появится в папке target, соответственно будет выполнятся и через
+        //после компиляции файл появится в папке target, соответственно будет выполняться и через
         //psvm и через тесты, и через тревис
+         */
         this.path = Objects.requireNonNull(Config.class.getClassLoader().getResource(path)).getFile();
     }
 
@@ -27,10 +28,14 @@ public class Config {
             while ((lines = read.readLine()) != null) {
                 tokens = lines.split("\\=");
 
-                //проигнорим битые строки:
-                if ((tokens[0].length() == 0)               // пустые строки
-                        || (tokens[0].charAt(0) == '#')     // комментарии
-                        || (tokens.length < 2)) {           // строки, не содержащие знака "="
+                /** проигнорим битые строки:
+                 * пустые строки length() == 0
+                 * комментарии '#'
+                 * строки, не содержащие знака "="
+                 */
+                if ((tokens[0].length() == 0)
+                        || (tokens[0].charAt(0) == '#')
+                        || (tokens.length < 2)) {
                     continue;
                 }
                 values.put(tokens[0], tokens[1]);

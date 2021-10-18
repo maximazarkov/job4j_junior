@@ -1,22 +1,20 @@
 package ru.job4j.generic;
 
-import java.lang.reflect.ParameterizedType;
-
 /**
- * Демонстрация работы с Generic-ами. На примере класса Stack и подифицированного конструктора SimpleList
- * можно получить тип генерика. Это удобно, когда мы не можем получить тип генерика непостедственно, т.к. при
+ * Демонстрация работы с Generic-ами. На примере класса Stack и модифицированного конструктора SimpleList
+ * можно получить тип генерика. Это удобно, когда мы не можем получить тип генерика непосредственно, т.к. при
  * компиляции генерики подчищаются и компилятор не поймет, какой тип объекта был передан
- * @param <T>
+ * @param <T> - подстановочный тип
  */
-//public class SimpleList<E extends Number> {
+
 public class SimpleList<T> {
 
     Object[] objects;
     int index = 0;
 
-    // прогамма не качественная, только для демонстрации
     public SimpleList(int size) {
         this.objects = new Object[size];
+/**
 //        Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 //
 //        try {
@@ -25,6 +23,7 @@ public class SimpleList<T> {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+ */
     }
 
     public <K> K print(K value) {
@@ -36,7 +35,7 @@ public class SimpleList<T> {
         this.objects[index++] = value;
     }
 
-    public T get(int posirion) {
-        return (T) this.objects[posirion];
+    public T get(int position) {
+        return (T) this.objects[position];
     }
 }

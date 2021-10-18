@@ -29,17 +29,18 @@ public class ConsoleChat {
     /**
      * конструктор
      * @param path - путь к словарю бота
-     * @param pathLogChat - путь к логфайлу диалога с ботом
+     * @param pathLogChat - путь к log файлу диалога с ботом
      * @throws IOException
      */
     public ConsoleChat(String path, String pathLogChat) throws IOException {
-        //Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
+        /**Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
         //как параметр конструктора, получаем имя файла, который лежит в папке src/main/resources
-        //после компиляции файл появится в папке target, соответственно будет выполнятся и через
+        //после компиляции файл появится в папке target, соответственно будет выполняться и через
         //psvm и через тесты, и через тревис
+         */
         this.path = Objects.requireNonNull(Config.class.getClassLoader().getResource(path)).getFile();
             try (FileWriter file =
-                         new FileWriter (
+                         new FileWriter(
                                  (Config.class.getClassLoader().getResource("")).getPath()
                                          + pathLogChat)
             ) {
@@ -53,7 +54,7 @@ public class ConsoleChat {
     }
 
     /**
-     * метод для вывод помощи
+     * метод для вывода помощи
      */
     private static void help() {
         System.out.println("[BOT] > Если хочешь чтоб я замолчал, набери \"" + STOP + "\"");
@@ -77,11 +78,11 @@ public class ConsoleChat {
     }
 
     /**
-     * Метод проверки комманды на приостановку или возобновления ответов бота
+     * Метод проверки команды на приостановку или возобновления ответов бота
      * @param phrase - ответ пользователя или возможная команда боту, например, "стоп", "продолжить" и т.д.
-     * @param command - текст коммадны для сранения
+     * @param command - текст командны для сравнения
      * @param sb - параметр запрещающий или разрешающий ответ бота
-     * @param message - сообщение бота, которое должно высветится в случае совпадения ответа пользователя и комманды
+     * @param message - сообщение бота, которое должно высветится в случае совпадения ответа пользователя и команды
      */
     private void checkCommand(String phrase, String command, boolean sb, String message) {
         if (phrase.equals(command)) {
@@ -92,8 +93,8 @@ public class ConsoleChat {
     }
 
     /**
-     * метод выполняющий запись данных в файл. Дублирующее сообщение выводится в консоль.
-     * @param line - строка для вывода инфомрации в консоль и записи в файл.
+     * Метод выполняющий запись данных в файл. Дублирующее сообщение выводится в консоль.
+     * @param line - строка для вывода информации в консоль и записи в файл.
      * @deprecated
      */
     private void writeLogChat(String line) {
@@ -107,7 +108,7 @@ public class ConsoleChat {
     }
 
     private void writeLogChat(List<String> chatLog) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(this.pathLogChat, UTF_8))) {
             Iterator<String> it = chatLog.iterator();
             while (it.hasNext()) {
                 writer.write(it.next());
@@ -119,7 +120,7 @@ public class ConsoleChat {
     }
 
     /**
-     * метод для чтения словаря бота. В итоге формируется коллекция ответов бота
+     * Метод для чтения словаря бота. В итоге формируется коллекция ответов бота
      */
     private void readPhrase() {
         String line = null;

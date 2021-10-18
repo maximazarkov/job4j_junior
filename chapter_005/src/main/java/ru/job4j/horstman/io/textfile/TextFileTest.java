@@ -20,17 +20,17 @@ public class TextFileTest {
         staff[1] = new Employee("Harry Hacker", 50000, 1989, 10, 1);
         staff[2] = new Employee("Tony Tester", 40000, 1990, 3, 15);
 
-        // Сохранить запись обо всех сотрудниках в файле employee.dat
+        /** Сохранить запись обо всех сотрудниках в файле employee.dat */
         try (PrintWriter out = new PrintWriter("employee.dat", "UTF-8")) {
             writeData(staff, out);
         }
 
-        // извлеч все записи в новый массив
+        /** извлечь все записи в новый массив */
         try (Scanner in = new Scanner(
                 new FileInputStream("employee.dat"), "UTF-8")) {
             Employee[] newStaff = readData(in);
 
-            // вывести вновь прочитанные записи о сотрудниках
+            /** вывести вновь прочитанные записи о сотрудниках */
             for (Employee e : newStaff) {
                 System.out.println(e);
             }
@@ -42,8 +42,8 @@ public class TextFileTest {
      * @param employees массив записей о сотрудниках
      * @param out Поток записей выводимых данных
      */
-    private static void writeData(Employee[] employees, PrintWriter out ) throws IOException {
-        // записать количество сотрудников
+    private static void writeData(Employee[] employees, PrintWriter out) throws IOException {
+        /** записать количество сотрудников */
         out.println(employees.length);
         for (Employee e : employees) {
             writeEmployee(out, e);
@@ -56,9 +56,9 @@ public class TextFileTest {
      * @return Массив записей о сотрудниках
      */
     private static Employee[] readData(Scanner in) {
-        //извлечь размер массива
+        /** извлечь размер массива */
         int n = in.nextInt();
-        in.nextLine(); //consume newline
+        in.nextLine();
 
         Employee[] employees = new Employee[n];
         for (int i = 0; i < n; i++) {

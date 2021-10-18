@@ -9,9 +9,10 @@ import java.util.Objects;
  * Поле, в котором эта ссылка храниться, обычно называется next.
  * Объект списка содержит ссылку на первый элемент first.
  */
+
 public class SimpleArrayList<E> {
-    private int size; // размер контейнера
-    private Node<E> first; // ссылка на первый объект харнения, который содержет ссылку на следующий элемент
+    private int size;
+    private Node<E> first;
 
     /**
      * Метод вставляет в начало списка данные.
@@ -19,9 +20,9 @@ public class SimpleArrayList<E> {
      * @param data - сохраняет
      */
     public void add(E data) {
-        Node<E> newLink = new Node<>(data);  // создаем новый элемент
-        newLink.next = this.first; // запоминаем ссылку прежнего первого элемента в новом
-        this.first = newLink; //
+        Node<E> newLink = new Node<>(data);
+        newLink.next = this.first;
+        this.first = newLink;
         this.size++;
     }
 
@@ -30,9 +31,6 @@ public class SimpleArrayList<E> {
      * @return - возвращает удаленный элемент
      */
     public E delete() {
-//  решил воспользоваться проверкой индекса из Object в замен if (isEmpty) throw
-//  при отсуствии данных (index = 0)  должно вывалиться исключение throw outOfBoundsCheckIndex(oobef, index, length)
-//  с помощью статического метода checkIndex(...) класса Preconditions
         Objects.checkIndex(0, size);
         E r = this.first.data;
         this.first = this.first.next;

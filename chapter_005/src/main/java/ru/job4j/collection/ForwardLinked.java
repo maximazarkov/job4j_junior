@@ -20,7 +20,6 @@ public class ForwardLinked<T> implements Iterable<T> {
     }
 
     public void revert() {
-        // по сути нужно перенаправить ссылки со следующих на предыдущие
         Node<T> revertNext = null;
         Node<T> current = head;
         Node<T> next = head.next;

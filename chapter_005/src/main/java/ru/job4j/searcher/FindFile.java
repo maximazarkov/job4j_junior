@@ -1,18 +1,18 @@
 package ru.job4j.searcher;
 
-/*
-1. Создать программу для поиска файла.
-2. Программа должна искать данные в заданном каталоге и подкаталогах.
-3. Имя файла может задаваться, целиком, по маске, по регулярному выражение(не обязательно).
-4. Программа должна собираться в jar и запускаться через java -jar find.jar -d c:/ -n *.txt -m -o log.txt
-Ключи
--d - директория в которая начинать поиск.
--n - имя файл, маска, либо регулярное выражение.
--m - искать по макс, либо -f - полное совпадение имени. -r регулярное выражение.
--o - результат записать в файл.
-5. Программа должна записывать результат в файл.
-6. В программе должна быть валидация ключей и подсказка.
-* */
+/**
+ * 1. Программа для поиска файла.
+ * 2. Программа ищет данные в заданном каталоге и подкаталогах.
+ * 3. Имя файла может задаваться, целиком, по маске, по регулярному выражению (необязательно).
+ * 4. Программа должна собираться в jar и запускаться через java -jar find.jar -d c:/ -n *.txt -m -o log.txt
+ * Ключи
+ * -d - директория в которая начинать поиск.
+ * -n - имя файл, маска, либо регулярное выражение.
+ * -m - искать по максимуму, либо -f - полное совпадение имени. -r регулярное выражение.
+ * -o - результат записать в файл.
+ * 5. Программа записывает результат в файл.
+ * 6. В программе есть валидация ключей и подсказка.
+ */
 
 import ru.job4j.io.Config;
 
@@ -33,8 +33,6 @@ public class FindFile {
 
     private static StringBuilder data = new StringBuilder();
 
-
-
     private static void appendData(StringBuilder sb, String... ad) {
         for (String d : ad) {
             sb.append(d);
@@ -45,7 +43,6 @@ public class FindFile {
 
     private static void writeFileLog(ParseArgs pArgs) {
         String pathOut = Objects.requireNonNull(Config.class.getClassLoader().getResource("")).getPath();
-//        pathLog = Config
         System.out.println(pathOut);
 
         try (BufferedWriter out = new BufferedWriter(
@@ -71,13 +68,11 @@ public class FindFile {
 
     private static List<Path> findFile(ParseArgs pArgs, Predicate<Path> searchRules) throws IOException {
         LinkedList<Path> fileList = new LinkedList<>();
-        //работает!
             search(Paths.get(pArgs.sourceDir()), searchRules).forEach(p -> fileList.add(p.toAbsolutePath()));
         return fileList;
     }
 
     public static void main(String[] args) throws IOException {
-//        FindFile ff = new FindFile();
         ParseArgs pArgs = new ParseArgs();
 
         pArgs.parseArgs(args);

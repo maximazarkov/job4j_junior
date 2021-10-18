@@ -20,11 +20,11 @@ public class AnalizyTest {
         File unavailable = folder.newFile("unavailable.csv");
         try (PrintWriter out = new PrintWriter(new FileOutputStream(server))) {
             out.println("200 10:56:01");
-            out.println("500 10:57:01"); //onLine
+            out.println("500 10:57:01");
             out.println("400 10:58:01");
-            out.println("200 10:59:01"); //offLine
-            out.println("500 11:01:02"); //onLine
-            out.println("200 11:02:02"); //offLine
+            out.println("200 10:59:01");
+            out.println("500 11:01:02");
+            out.println("200 11:02:02");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class AnalizyTest {
 
     @Test
     public void whenSecondDiapsonesIsOnLine() throws IOException {
-//        String path = (Analizy.class.getResource("").getPath());
+/**        String path = (Analizy.class.getResource("").getPath()); */
 
         File server = folder.newFile("server.log");
         File unavailable = folder.newFile("unavailable.csv");
@@ -82,5 +82,4 @@ public class AnalizyTest {
             e.printStackTrace();
         }
     }
-
 }

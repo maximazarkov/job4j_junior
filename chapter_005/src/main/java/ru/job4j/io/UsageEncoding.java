@@ -18,7 +18,7 @@ public class UsageEncoding {
         return builder.toString();
     }
 
-    public void writeDateInFile( String path, String data) {
+    public void writeDateInFile(String path, String data) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, Charset.forName("WINDOWS-1251"), true))) {
             bw.write(data + System.lineSeparator());
         } catch (IOException e) {

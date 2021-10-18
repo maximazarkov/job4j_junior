@@ -1,9 +1,9 @@
 package ru.job4j.iterator;
 
 import java.util.Iterator;
-/*
-* Необходимо создать итератор для двухмерного массива.
-int[][] value = {
+/**
+* Необходимо создать итератор для двухмерного массива
+ int[][] value = {
    {1, 2}
    {3, 4}
 };
@@ -41,7 +41,7 @@ public class MatrixIterator implements Iterator {
 
     /**
      * hasNext - метод для проверки окончания элементов в двумерной матрице
-     * @return - true, если в матрице еще есть элементы, false - следующий элемент отсуствует
+     * @return - true, если в матрице еще есть элементы, false - следующий элемент отсутствует
      */
     @Override
     public boolean hasNext() {
