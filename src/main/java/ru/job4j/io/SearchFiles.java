@@ -14,7 +14,7 @@ public class SearchFiles implements FileVisitor<Path> {
     private final List<Path> paths = new LinkedList<>();
 
     /** Т.к. мы расширили возможности нашего поисковика, пробросив отложенное условие проверки
-    // прямо до самого последнего метода, то ext нам уже не нужен
+    * прямо до самого последнего метода, то ext нам уже не нужен
      */
     private Predicate<Path> condition;
 
@@ -35,9 +35,9 @@ public class SearchFiles implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         /** Тут без комментариев...
-        // одно хочу заменить, что вызов visitFile(...) происходит в результате работы цикла
-        // в методе Files.walkFileTree(root, searcher) - см. метод search(...)
-        // здесь только исполняем отложенное задание, переданное в предикате
+        *  одно хочу заменить, что вызов visitFile(...) происходит в результате работы цикла
+        *  в методе Files.walkFileTree(root, searcher) - см. метод search(...)
+        *  здесь только исполняем отложенное задание, переданное в предикате
         */
         if (condition.test(file)) {
             paths.add(file);

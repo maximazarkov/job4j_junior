@@ -41,7 +41,7 @@ public class SimpleArrayTest {
         assertThat(simpleArray.get(0)).isEqualTo("test");
         assertThat(simpleArray.get(1)).isEqualTo("test2");
         assertThat(thrown.getMessage()).isEqualTo("Index 2 out of bounds for length 2");
-        //следующая строка генерит Exception, но при установленной заглуше мы этого не видим
+
         thrown = assertThrows(ArrayIndexOutOfBoundsException.class,
                 () -> simpleArray.get(2));
         assertThat(thrown.getMessage()).isEqualTo("Index 2 out of bounds for length 2");

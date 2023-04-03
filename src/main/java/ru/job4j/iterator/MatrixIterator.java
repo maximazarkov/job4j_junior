@@ -45,7 +45,7 @@ public class MatrixIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-//        return values.length > indexCol && values[indexCol].length > indexRow;
+/**        return values.length > indexCol && values[indexCol].length > indexRow; */
         return values.length > indexCol;
     }
 

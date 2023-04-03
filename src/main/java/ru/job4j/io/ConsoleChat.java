@@ -34,9 +34,9 @@ public class ConsoleChat {
      */
     public ConsoleChat(String path, String pathLogChat) throws IOException {
         /**Механизм получения ссылки на файл через рефлексию. В переменной path, полученной
-        //как параметр конструктора, получаем имя файла, который лежит в папке src/main/resources
-        //после компиляции файл появится в папке target, соответственно будет выполняться и через
-        //psvm и через тесты, и через тревис
+        * как параметр конструктора, получаем имя файла, который лежит в папке src/main/resources
+        * после компиляции файл появится в папке target, соответственно будет выполняться и через
+        * psvm и через тесты, и через тревис
          */
         this.path = Objects.requireNonNull(Config.class.getClassLoader().getResource(path)).getFile();
             try (FileWriter file =
@@ -48,9 +48,7 @@ public class ConsoleChat {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        }
         this.pathLogChat = Objects.requireNonNull(Config.class.getClassLoader().getResource(pathLogChat)).getFile();
-
     }
 
     /**

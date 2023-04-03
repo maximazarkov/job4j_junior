@@ -76,18 +76,18 @@ public class SimpleListTest {
     @Test
     public void whenCreateIntShouldReturnInt() {
         /**
-////        SimpleList<Integer> simpleList = new SimpleList<Integer>(4);
-//        SimpleList<Integer> simpleList = new SimpleList<>(4);
-//        simpleList.add(2);
-//        Integer result = simpleList.get(1);
-//
-//        assertThat(result, is(2));
-         */
+        * SimpleList<Integer> simpleList = new SimpleList<Integer>(4);
+        * SimpleList<Integer> simpleList = new SimpleList<>(4);
+        * simpleList.add(2);
+        * Integer result = simpleList.get(1);
+        *
+        * assertThat(result, is(2));
+        */
     }
 
     public void showList() {
         List<String> list = new ArrayList<>(100);
-        List<? super Integer> numbers = new LinkedList<>();  // ограничили снизу
+        List<? super Integer> numbers = new LinkedList<>();
         numbers.add(1);
     }
 

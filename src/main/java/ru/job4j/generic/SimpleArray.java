@@ -20,17 +20,17 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     public SimpleArray(int size) {
         this.size = size;
-        this.array = new Object[size]; //реализуем пока через Object
+        this.array = new Object[size];
 /** нужно попробовать реализовать все через рефлексию. Первая попытка была неудачной:
- * //  Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
- * //
- * //  try {
- * ////T value = t.getDeclaredConstructor().newInstance();
- * ////System.out.print("string. " + value);
- * //      this.array = (T[]) t.getDeclaredConstructor().newInstance() ;
- * //  } catch (Exception e) {
- * //      e.printStackTrace();
- * //  }
+ *   Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+ *
+ *   try {
+ * //T value = t.getDeclaredConstructor().newInstance();
+ * //System.out.print("string. " + value);
+ *       this.array = (T[]) t.getDeclaredConstructor().newInstance() ;
+ *   } catch (Exception e) {
+ *       e.printStackTrace();
+ *   }
  */
     }
 

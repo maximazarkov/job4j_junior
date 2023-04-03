@@ -15,14 +15,13 @@ public class SimpleList<T> {
     public SimpleList(int size) {
         this.objects = new Object[size];
 /**
-//        Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-//
-//        try {
-//            T value = t.getDeclaredConstructor().newInstance();
-//            System.out.printf("string. " + value);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+ *   Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+ *   try {
+ *       T value = t.getDeclaredConstructor().newInstance();
+ *       System.out.printf("string. " + value);
+ *   } catch (Exception e) {
+ *       e.printStackTrace();
+ *   }
  */
     }
 

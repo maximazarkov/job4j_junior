@@ -1,7 +1,7 @@
 package ru.job4j.map;
 
 public class  SimpleHashMap<K, V> {
-    private final static int DEFAULT_ARRAY_SIZE = 1 << 4; // aka 16
+    private final static int DEFAULT_ARRAY_SIZE = 1 << 4; /** aka 16 */
     private final static float DEFAULT_LOAD_FACTOR = 0.75f;
 
     private Node<K, V>[] table;

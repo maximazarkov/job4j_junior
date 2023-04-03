@@ -23,11 +23,12 @@ public class Zip {
                 source = it.next();
                 zip.putNextEntry(new ZipEntry(source.getPath()));
                 try (BufferedInputStream out = new BufferedInputStream(
-                        /** На этом месте при архивации одного файла или директории, ошибки не происходит
-                        // если файлов архивируется много, то программа падает с ошибкой
-                        // java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
-                        // при этом запись c:\projects\job4j_junior выглядит как файл без расширения на
-                        // директорию не похож. Видимо в этом проблема
+
+                        /**
+                         * если файлов архивируется много, то программа падает с ошибкой
+                         * java.io.FileNotFoundException: c:\projects\job4j_junior (Отказано в доступе)
+                         * при этом запись c:\projects\job4j_junior выглядит как файл без расширения на
+                         * директорию не похож. Видимо в этом проблема
                          */
                         new FileInputStream(source.getPath()))) {
                     zip.write(out.readAllBytes());

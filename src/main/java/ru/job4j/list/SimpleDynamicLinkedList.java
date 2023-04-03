@@ -165,7 +165,6 @@ public class SimpleDynamicLinkedList<E> implements Iterable<E> {
                 }
             }
         }
-//    }
 
     /**
      * Returns the (non-null) Node at the specified element index.

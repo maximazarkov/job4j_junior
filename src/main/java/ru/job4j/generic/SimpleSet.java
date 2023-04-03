@@ -26,7 +26,7 @@ public class SimpleSet<E> implements Iterable<E> {
                 }
             }
             /**
-//            System.arraycopy(sl, 0, newSl, 0, size);
+             * System.arraycopy(sl, 0, newSl, 0, size);
              */
             this.sl = newSl;
         }
