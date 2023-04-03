@@ -25,8 +25,8 @@ public class SimpleArray<T> implements Iterable<T> {
  *   Class<T> t = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
  *
  *   try {
- * //T value = t.getDeclaredConstructor().newInstance();
- * //System.out.print("string. " + value);
+ * /** T value = t.getDeclaredConstructor().newInstance();
+ * /** System.out.print("string. " + value);
  *       this.array = (T[]) t.getDeclaredConstructor().newInstance() ;
  *   } catch (Exception e) {
  *       e.printStackTrace();
