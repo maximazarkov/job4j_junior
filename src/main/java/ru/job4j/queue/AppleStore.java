@@ -17,8 +17,7 @@ public class AppleStore {
         for (int i = 0; i < count; i++) {
             result = queue.poll();
         }
-        assert result != null;
-        return result.printName();
+        return result.name();
     }
 
     public String getFirstUpsetCustomer() {
@@ -26,7 +25,6 @@ public class AppleStore {
         for (int i = 0; i <= count; i++) {
             result = queue.poll();
         }
-        assert result != null;
-        return result.printName();
+        return result.name();
     }
 }
