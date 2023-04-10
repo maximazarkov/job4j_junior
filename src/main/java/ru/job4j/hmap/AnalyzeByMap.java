@@ -1,11 +1,6 @@
 package ru.job4j.hmap;
 
-import com.sun.javafx.scene.control.behavior.TwoLevelFocusBehavior;
-
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AnalyzeByMap {
     /**
@@ -82,18 +77,31 @@ public class AnalyzeByMap {
     /**
      * Метод bestStudent() - возвращает лучшего ученика. Лучшим считается ученик с наибольшим
      * суммарным баллом по всем предметам. Возвращает объект Label (имя ученика и суммарный балл).
-     * @param pupils
-     * @return
+     * @param pupils - список учеников.
+     * @return - лучший ученик.
      */
     public static Label bestStudent(List<Pupil> pupils) {
-        return null;
+        String bestName = null;
+        int bestSum = 0;
+        for (Pupil pupil : pupils) {
+            List<Subject> subjects = pupil.subjects();
+            int sum = 0;
+            for (Subject subject : subjects) {
+                sum += subject.score();
+            }
+            if (bestName == null || bestSum < sum) {
+                bestName = pupil.name();
+                bestSum = sum;
+            }
+        }
+        return new Label(bestName, bestSum);
     }
 
     /**
      * Метод bestSubject() - возвращает предмет с наибольшим баллом для всех студентов. Возвращает
      * объект Label (имя предмета, сумма баллов каждого ученика по этому предмету).
-     * @param pupils
-     * @return
+     * @param pupils - список учеников.
+     * @return - предмет с наибольшим числом баллов.
      */
     public static Label bestSubject(List<Pupil> pupils) {
         return null;
