@@ -49,17 +49,9 @@ public class AnalyzeByMap {
      * @return - средний балл по каждому предмету
      */
     public static List<Label> averageScoreBySubject(List<Pupil> pupils) {
-        List<Label> averageScoreBySubject = new ArrayList<>();
-        Queue<Subject> allSubjects = new LinkedList<>(pupils
-                .stream()
-                .flatMap((Pupil pupil) -> pupil.subjects().stream())
-                .toList());
-        List<String> nameSubjects = new LinkedList<>();
-        for (Subject s : allSubjects) {
-            if (!nameSubjects.contains(s.name())) {
-                nameSubjects.add(s.name());
-            }
-        }
+        List<Label> averageScoreBySubject = new LinkedList<>();
+        Queue<Subject> allSubjects = getAllSubjects(pupils);
+        List<String> nameSubjects = getNameSubjects(allSubjects);
         for (String str : nameSubjects) {
             int sum = 0;
             int count = 0;
@@ -104,6 +96,44 @@ public class AnalyzeByMap {
      * @return - предмет с наибольшим числом баллов.
      */
     public static Label bestSubject(List<Pupil> pupils) {
-        return null;
+        List<Label> scoreBySubject = new LinkedList<>();
+        Label bestSubject = null;
+        Queue<Subject> allSubjects = getAllSubjects(pupils);
+        List<String> nameSubjects = getNameSubjects(allSubjects);
+        for (String str : nameSubjects) {
+            double sum = 0;
+            for (Subject sbj : allSubjects) {
+                if (str.equals(sbj.name())) {
+                    sum += sbj.score();
+                }
+            }
+            scoreBySubject.add(new Label(str, sum));
+        }
+        for (Label score : scoreBySubject) {
+            if (bestSubject == null) {
+                bestSubject = new Label(score.name(), score.score());
+            } else {
+                bestSubject.compareTo(score);
+            }
+        }
+        return bestSubject;
+    }
+
+    private static List<String> getNameSubjects(Queue<Subject> allSubjects) {
+        List<String> nameSubjects = new LinkedList<>();
+        for (Subject s : allSubjects) {
+            if (!nameSubjects.contains(s.name())) {
+                nameSubjects.add(s.name());
+            }
+        }
+        return nameSubjects;
+    }
+
+    private static Queue<Subject> getAllSubjects(List<Pupil> pupils) {
+        Queue<Subject> allSubjects = new LinkedList<>(pupils
+                .stream()
+                .flatMap((Pupil pupil) -> pupil.subjects().stream())
+                .toList());
+        return allSubjects;
     }
 }
