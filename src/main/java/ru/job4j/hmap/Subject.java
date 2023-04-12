@@ -12,7 +12,6 @@ public record Subject(String name, int score) {
             return false;
         }
         Subject subject = (Subject) o;
- //       return score == subject.score && Objects.equals(name, subject.name);
         return Objects.equals(name, subject.name);
     }
 
